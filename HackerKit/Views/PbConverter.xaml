@@ -29,6 +29,20 @@
                         Keyboard="Text" />
             </Frame>
 
+            <Label Text="选择解码模式"
+           FontAttributes="Bold"
+           FontSize="Medium"
+           TextColor="#222222" />
+
+            <Picker x:Name="DecodeModePicker"
+            SelectedIndex="0">
+                <Picker.Items>
+                    <x:String>普通解码</x:String>
+                    <x:String>无head全部展开</x:String>
+                    <x:String>带head全部展开</x:String>
+                </Picker.Items>
+            </Picker>
+
             <Grid ColumnSpacing="15" RowSpacing="10" HorizontalOptions="Center">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*" />

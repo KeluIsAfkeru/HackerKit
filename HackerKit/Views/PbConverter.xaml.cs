@@ -13,6 +13,8 @@ namespace HackerKit.Views
 		public PbConverter()
 		{
 			InitializeComponent();
+
+			DecodeModePicker.SelectedIndex = 0;
 		}
 
 		//Hex转byte array
@@ -60,16 +62,50 @@ namespace HackerKit.Views
 				return;
 			}
 
+			if (DecodeModePicker.SelectedIndex < 0)
+			{
+				await ToastService.ShowToast("请选择解码模式");
+				return;
+			}
+
 			try
 			{
-				var hex = input.ParseHexWithSpaces();
-				var parseRootHead = ProtobufService.TryParseWithHead(hex);
-				var proto = ProtobufService.DeepParseHexProtos(parseRootHead);
-				//var proto = ProtobufService.Decode(hex);
-				var json = proto.ToJson();
+				var mode = DecodeModePicker.SelectedItem.ToString();
+				string json;
+
+				switch (mode)
+				{
+					case "普通解码":
+						{
+							var hex = input.ParseHexWithSpaces();
+							var proto = ProtobufService.TryParseWithHead(hex);
+							json = proto.ToJson();
+							break;
+						}
+					case "无head全部展开":
+						{
+							var hex = input.ParseHexWithSpaces();
+							var parseRootHead = ProtobufService.TryParseWithHead(hex);
+							var proto = ProtobufService.DeepParseHexProtos(parseRootHead);
+							json = proto.ToJson(false);
+							break;
+						}
+					case "带head全部展开":
+						{
+							var hex = input.ParseHexWithSpaces();
+							var parseRootHead = ProtobufService.TryParseWithHead(hex);
+							var proto = ProtobufService.DeepParseHexProtos(parseRootHead);
+							json = proto.ToJson(true);
+							break;
+						}
+					default:
+						{
+							await ToastService.ShowToast("未知解码模式");
+							return;
+						}
+				}
 
 				ResultEditor.Text = json;
-				ProtobufService.PrintProto(proto);
 				await ToastService.ShowToast("解码成功，结果为JSON字符串");
 			}
 			catch (FormatException ex)
@@ -81,6 +117,7 @@ namespace HackerKit.Views
 				await ToastService.ShowToast($"解码失败：{ex.Message}");
 			}
 		}
+
 
 		private void OnClearClicked(object sender, EventArgs e)
 		{

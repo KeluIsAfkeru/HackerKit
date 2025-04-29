@@ -200,33 +200,43 @@ namespace HackerKit.Services
 		{
 			if (val == null) return null;
 
-			if (val is Newtonsoft.Json.Linq.JObject jObj)
+			if (val is JObject jObj)
 			{
+				//识别head decoded结构
+				if (jObj["head"] != null && jObj["decoded"] != null)
+				{
+					byte[] headBytes = jObj["head"].ToString().HexToBytes();
+					Proto decodedProto = FromDictionary(jObj["decoded"].ToObject<Dictionary<string, object>>());
+					byte[] decodedBytes = ProtobufService.Encode(decodedProto);
+					return CombineBytes(headBytes, decodedBytes);
+				}
+
 				var dict = jObj.ToObject<Dictionary<string, object>>();
+				foreach (var key in dict.Keys.ToList())
+				{
+					dict[key] = ConvertValue(dict[key]);
+				}
 				return FromDictionary(dict);
 			}
-			if (val is Newtonsoft.Json.Linq.JArray jArr)
+			else if (val is JArray jArr)
 			{
 				var list = new List<object>();
 				foreach (var item in jArr)
-				{
 					list.Add(ConvertValue(item));
-				}
 				return list;
 			}
+			else if (val is string s && s.StartsWith("hex->", StringComparison.OrdinalIgnoreCase))
+				return s[5..].HexToBytes(); 
+			else
+				return val;
+		}
 
-			//把hex转回字节集
-			if (val is string s && s.StartsWith("hex->", StringComparison.OrdinalIgnoreCase))
-			{
-				string hex = s[6..];
-				if (hex.Length % 2 != 0) hex = "0" + hex;
-				var bytes = new byte[hex.Length / 2];
-				for (int i = 0; i < bytes.Length; i++)
-					bytes[i] = Convert.ToByte(hex.Substring(i * 2, 2), 16);
-				return bytes;
-			}
-
-			return val;
+		private static byte[] CombineBytes(byte[] head, byte[] body)
+		{
+			byte[] combined = new byte[head.Length + body.Length];
+			Buffer.BlockCopy(head, 0, combined, 0, head.Length);
+			Buffer.BlockCopy(body, 0, combined, head.Length, body.Length);
+			return combined;
 		}
 
 		private class JsonElementToObjectConverter : System.Text.Json.Serialization.JsonConverter<object>
