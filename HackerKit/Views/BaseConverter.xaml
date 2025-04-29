@@ -1,0 +1,154 @@
+﻿<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" xmlns:models="clr-namespace:HackerKit.Models"
+             x:Class="HackerKit.Views.BaseConverter"
+             Title="进制转换"
+             BackgroundColor="White"
+             Visual="Material">
+
+    <ScrollView>
+        <StackLayout Padding="24" Spacing="20">
+
+            <Label Text="请输入或粘贴需要转换的内容，选择对应的格式和分隔符后，点击转换按钮。"
+                   FontSize="Medium"
+                   TextColor="#666666"
+                   HorizontalOptions="Center"
+                   HorizontalTextAlignment="Center" />
+
+            <Label Text="输入内容"
+                   FontAttributes="Bold"
+                   FontSize="Medium"
+                   TextColor="#222222" />
+
+            <Frame HasShadow="True" CornerRadius="12" Padding="12" BackgroundColor="#F0F0F0">
+                <models:ScrollableEditor x:Name="InputEditor"
+                        AutoSize="TextChanges"
+                        HeightRequest="140"
+                        FontFamily="Courier New"
+                        FontSize="14"
+                        TextColor="#333333"
+                        Placeholder="在这里输入要转换的内容"
+                        Keyboard="Text" />
+            </Frame>
+
+            <!--选择框-->
+            <Grid ColumnSpacing="15" RowSpacing="15">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+
+                <!--源格式-->
+                <StackLayout Grid.Row="0" Grid.Column="0" Spacing="4">
+                    <Label Text="源格式" FontAttributes="Bold" TextColor="#222222" />
+                    <Picker x:Name="SourceFormatPicker" Title="请选择源格式">
+                        <Picker.Items>
+                            <x:String>十进制</x:String>
+                            <x:String>十六进制</x:String>
+                            <x:String>二进制</x:String>
+                            <x:String>Base64</x:String>
+                        </Picker.Items>
+                    </Picker>
+                </StackLayout>
+
+                <!--目标格式-->
+                <StackLayout Grid.Row="0" Grid.Column="1" Spacing="4">
+                    <Label Text="目标格式" FontAttributes="Bold" TextColor="#222222" />
+                    <Picker x:Name="TargetFormatPicker" Title="请选择目标格式">
+                        <Picker.Items>
+                            <x:String>十进制</x:String>
+                            <x:String>十六进制</x:String>
+                            <x:String>二进制</x:String>
+                            <x:String>Base64</x:String>
+                        </Picker.Items>
+                    </Picker>
+                </StackLayout>
+
+                <!--源格式分隔符-->
+                <StackLayout Grid.Row="1" Grid.Column="0" Spacing="4">
+                    <Label Text="源格式分隔符" FontAttributes="Bold" TextColor="#222222" />
+                    <Picker x:Name="SourceSeparatorPicker" Title="请选择源分隔符" SelectedIndexChanged="SourceSeparatorPicker_SelectedIndexChanged">
+                        <Picker.Items>
+                            <x:String>无</x:String>
+                            <x:String>逗号 (,)</x:String>
+                            <x:String>空格 ( )</x:String>
+                            <x:String>分号 (;)</x:String>
+                            <x:String>自定义</x:String>
+                        </Picker.Items>
+                    </Picker>
+                    <Entry x:Name="SourceSeparatorEntry" Placeholder="请输入自定义分隔符" IsVisible="False" />
+                </StackLayout>
+
+                <!--目标格式分隔符-->
+                <StackLayout Grid.Row="1" Grid.Column="1" Spacing="4">
+                    <Label Text="目标格式分隔符" FontAttributes="Bold" TextColor="#222222" />
+                    <Picker x:Name="TargetSeparatorPicker" Title="请选择目标分隔符" SelectedIndexChanged="TargetSeparatorPicker_SelectedIndexChanged">
+                        <Picker.Items>
+                            <x:String>无</x:String>
+                            <x:String>逗号 (,)</x:String>
+                            <x:String>空格 ( )</x:String>
+                            <x:String>分号 (;)</x:String>
+                            <x:String>自定义</x:String>
+                        </Picker.Items>
+                    </Picker>
+                    <Entry x:Name="TargetSeparatorEntry" Placeholder="请输入自定义分隔符" IsVisible="False" />
+                </StackLayout>
+            </Grid>
+
+            <Button Text="转换"
+                    HorizontalOptions="FillAndExpand"
+                    CornerRadius="8"
+                    BackgroundColor="#4A90E2"
+                    TextColor="White"
+                    FontAttributes="Bold"
+                    Clicked="OnConvertClicked" />
+
+            <Label Text="转换结果"
+                   FontAttributes="Bold"
+                   FontSize="Medium"
+                   TextColor="#222222" />
+
+            <Frame HasShadow="True" CornerRadius="12" Padding="12" BackgroundColor="#F0F0F0">
+                <models:ScrollableEditor x:Name="ResultEditor"
+                        AutoSize="TextChanges"
+                        HeightRequest="140"
+                        FontFamily="Courier New"
+                        FontSize="14"
+                        TextColor="#333333"
+                        IsReadOnly="True" />
+            </Frame>
+
+            <Button Text="复制结果"
+                    HorizontalOptions="Center"
+                    WidthRequest="140"
+                    CornerRadius="8"
+                    BackgroundColor="#7B61FF"
+                    TextColor="White"
+                    FontAttributes="Bold"
+                    Clicked="OnCopyClicked" />
+
+            <StackLayout Margin="0,20,0,0" Spacing="6">
+
+                <Label Text="转换示例：" FontAttributes="Bold" FontSize="Medium" TextColor="#222222" />
+
+                <Label Text="• 输入：-118,70,255，源格式：十进制，源分隔符：逗号，目标格式：十六进制，目标分隔符：逗号" FontSize="Small" TextColor="#555555" />
+                <Label Text="  结果：8a,46,ff" FontSize="Small" TextColor="#555555" Margin="12,0,0,0" />
+
+                <Label Text="• 输入：8a,46,ff，源格式：十六进制，源分隔符：逗号，目标格式：十进制，目标分隔符：逗号" FontSize="Small" TextColor="#555555" />
+                <Label Text="  结果：138,70,255" FontSize="Small" TextColor="#555555" Margin="12,0,0,0" />
+
+                <Label Text="• 输入：5Lit5Zu9YWJj，源格式：Base64，源分隔符：无，目标格式：十六进制，目标分隔符：逗号" FontSize="Small" TextColor="#555555" />
+                <Label Text="  结果：e4,b8,ad,e5,9b,bd,61,62,63" FontSize="Small" TextColor="#555555" Margin="12,0,0,0" />
+
+                <Label Text="• 输入：e4,b8,ad,e5,9b,bd,61,62,63，源格式：十六进制，源分隔符：逗号，目标格式：Base64，目标分隔符：无" FontSize="Small" TextColor="#555555" />
+                <Label Text="  结果：5Lit5Zu9YWJj" FontSize="Small" TextColor="#555555" Margin="12,0,0,0" />
+
+            </StackLayout>
+
+
+        </StackLayout>
+    </ScrollView>
+</ContentPage>

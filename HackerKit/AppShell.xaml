@@ -1,0 +1,71 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<Shell xmlns="http://xamarin.com/schemas/2014/forms"
+       xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+       xmlns:xct="http://xamarin.com/schemas/2020/toolkit"
+       xmlns:local="clr-namespace:HackerKit"
+       xmlns:views="clr-namespace:HackerKit.Views"
+       x:Class="HackerKit.AppShell"
+       FlyoutBehavior="Flyout">
+
+    <Shell.Resources>
+        <Style x:Key="MenuItemFrameStyle" TargetType="Frame">
+            <Setter Property="CornerRadius" Value="12" />
+            <Setter Property="HasShadow" Value="True" />
+            <Setter Property="Padding" Value="12,8" />
+            <Setter Property="Margin" Value="8,4" />
+            <Setter Property="BackgroundColor" Value="{StaticResource InitialBackgroundColor}" />
+            <Setter Property="HorizontalOptions" Value="FillAndExpand" />
+        </Style>
+    </Shell.Resources>
+
+    <MenuItem Text="嘿壳工具" />
+
+    <FlyoutItem Title="Protobuf编码解码" FlyoutIcon="icon_encode.png" Route="base64">
+        <ShellContent Title="Protobuf编码解码" ContentTemplate="{DataTemplate views:PbConverter}" Route="encoding_pb_hex_page" />
+    </FlyoutItem>
+    
+    
+
+    <MenuItem Text="编码工具" />
+
+    <FlyoutItem Title="Base64 编码/解码" FlyoutIcon="icon_encode.png" Route="encoding_base64">
+        <ShellContent Title="Base64 编码/解码" ContentTemplate="{DataTemplate views:Base64Converter}" Route="encoding_base64_page" />
+    </FlyoutItem>
+    <FlyoutItem Title="Unicode 编码/解码" FlyoutIcon="icon_encode.png" Route="encoding_base64">
+        <ShellContent Title="Unicode 编码/解码" ContentTemplate="{DataTemplate views:UnicodeConverter}" Route="encoding_unicode_page" />
+    </FlyoutItem>
+    <FlyoutItem Title="URL 编码/解码" FlyoutIcon="icon_encode.png" Route="encoding_base64">
+        <ShellContent Title="URL 编码/解码" ContentTemplate="{DataTemplate views:UrlConverter}" Route="encoding_url_page" />
+    </FlyoutItem>
+    <FlyoutItem Title="进制转换 (单字节)" FlyoutIcon="icon_encode.png" Route="encoding_base64">
+        <ShellContent Title="进制转换 (单字节)" ContentTemplate="{DataTemplate views:BaseConverter}" Route="encoding_base_page" />
+    </FlyoutItem>
+
+
+
+    <MenuItem Text="数字工具" />
+
+    <FlyoutItem Title="原码/反码/补码计算" FlyoutIcon="icon_encode.png" Route="encoding_base64">
+        <ShellContent Title="原码/反码/补码计算" ContentTemplate="{DataTemplate views:BinaryCodeCalculator}" Route="encoding_binary_code_page" />
+    </FlyoutItem>
+    <FlyoutItem Title="JWT解析器" FlyoutIcon="icon_encode.png" Route="encoding_base64">
+        <ShellContent Title="JWT解析器" ContentTemplate="{DataTemplate views:JwtTool}" Route="encoding_jwt_page" />
+    </FlyoutItem>
+
+
+
+    <MenuItem Text="加密解密" />
+
+    <FlyoutItem Title="AES加密" FlyoutIcon="icon_encrypt.png" Route="encrypt_aes">
+        <ShellContent Title="AES加密" ContentTemplate="{DataTemplate views:Base64Converter}" Route="encrypt_aes_page" />
+        <ShellContent Title="MD5哈希" ContentTemplate="{DataTemplate views:Base64Converter}" Route="md5_hash_page" />
+    </FlyoutItem>
+
+
+    <MenuItem Text="文本处理" />
+
+    <FlyoutItem Title="大小写转换" FlyoutIcon="icon_text.png" Route="text_case">
+        <ShellContent Title="大小写转换" ContentTemplate="{DataTemplate views:Base64Converter}" Route="text_case_page" />
+        <ShellContent Title="文本统计" ContentTemplate="{DataTemplate views:Base64Converter}" Route="text_stat_page" />
+    </FlyoutItem>
+</Shell>

@@ -1,0 +1,41 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.4.33205.214
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HackerKit.Android", "HackerKit.Android\HackerKit.Android.csproj", "{B4E62F14-911B-4232-B411-735A4672720E}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HackerKit", "HackerKit\HackerKit.csproj", "{1F6021C2-E6E0-4876-BAC7-7E3DB98D9656}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HackerKit.Test", "HackerKit.Test\HackerKit.Test.csproj", "{302463B7-5AC2-4CD5-B330-5B1997912791}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{B4E62F14-911B-4232-B411-735A4672720E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B4E62F14-911B-4232-B411-735A4672720E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B4E62F14-911B-4232-B411-735A4672720E}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
+		{B4E62F14-911B-4232-B411-735A4672720E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B4E62F14-911B-4232-B411-735A4672720E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B4E62F14-911B-4232-B411-735A4672720E}.Release|Any CPU.Deploy.0 = Release|Any CPU
+		{1F6021C2-E6E0-4876-BAC7-7E3DB98D9656}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1F6021C2-E6E0-4876-BAC7-7E3DB98D9656}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1F6021C2-E6E0-4876-BAC7-7E3DB98D9656}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
+		{1F6021C2-E6E0-4876-BAC7-7E3DB98D9656}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1F6021C2-E6E0-4876-BAC7-7E3DB98D9656}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1F6021C2-E6E0-4876-BAC7-7E3DB98D9656}.Release|Any CPU.Deploy.0 = Release|Any CPU
+		{302463B7-5AC2-4CD5-B330-5B1997912791}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{302463B7-5AC2-4CD5-B330-5B1997912791}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{302463B7-5AC2-4CD5-B330-5B1997912791}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{302463B7-5AC2-4CD5-B330-5B1997912791}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {8D3D32E6-F8ED-4B20-B0EE-8F3EAEC2588E}
+	EndGlobalSection
+EndGlobal

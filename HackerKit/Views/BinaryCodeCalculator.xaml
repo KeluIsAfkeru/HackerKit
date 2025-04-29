@@ -1,0 +1,130 @@
+﻿<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="HackerKit.Views.BinaryCodeCalculator"
+             Title="原码/反码/补码计算器"
+             BackgroundColor="White"
+             Visual="Material">
+
+    <ScrollView>
+        <StackLayout Padding="24" Spacing="20">
+            <Label Text="请输入一个整数，并选择位数，点击计算查看对应的原码、反码和补码。"
+                   FontSize="Medium"
+                   TextColor="#666666"
+                   HorizontalOptions="Center"
+                   HorizontalTextAlignment="Center" />
+
+            <Label Text="输入整数"
+                   FontAttributes="Bold"
+                   FontSize="Medium"
+                   TextColor="#222222" />
+
+            <Frame HasShadow="True" CornerRadius="12" Padding="12" BackgroundColor="#F0F0F0">
+                <Entry x:Name="InputEntry"
+                       Keyboard="Numeric"
+                       FontFamily="Courier New"
+                       FontSize="14"
+                       TextColor="#333333"
+                       Placeholder="请输入整数，如 -123" />
+            </Frame>
+
+            <Label Text="选择位数"
+                   FontAttributes="Bold"
+                   FontSize="Medium"
+                   TextColor="#222222" />
+
+            <Picker x:Name="BitPicker"
+                    Title="选择位数"
+                    FontSize="14"
+                    TextColor="#333333" />
+
+            <Button Text="计算"
+                    CornerRadius="8"
+                    BackgroundColor="#4A90E2"
+                    TextColor="White"
+                    FontAttributes="Bold"
+                    Clicked="OnCalculateClicked" />
+
+            <Label Text="计算结果"
+                   FontAttributes="Bold"
+                   FontSize="Medium"
+                   TextColor="#222222" />
+
+            <Frame HasShadow="True" CornerRadius="12" Padding="12" BackgroundColor="#F0F0F0">
+                <ScrollView Orientation="Horizontal">
+                    <StackLayout Spacing="12">
+
+                        <Label Text="原码：" FontAttributes="Bold" TextColor="#333" />
+                        <Label x:Name="OriginalCodeLabel" FontFamily="Courier New" TextColor="#555" />
+
+                        <Label Text="反码：" FontAttributes="Bold" TextColor="#333" />
+                        <Label x:Name="InverseCodeLabel" FontFamily="Courier New" TextColor="#555" />
+
+                        <Label Text="补码：" FontAttributes="Bold" TextColor="#333" />
+                        <Label x:Name="ComplementCodeLabel" FontFamily="Courier New" TextColor="#555" />
+
+                    </StackLayout>
+                </ScrollView>
+            </Frame>
+
+            <Grid ColumnSpacing="15" HorizontalOptions="Center" Margin="0,10,0,0">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+
+                <Button Text="复制原码"
+                        Grid.Column="0"
+                        CornerRadius="8"
+                        BackgroundColor="#7B61FF"
+                        TextColor="White"
+                        FontAttributes="Bold"
+                        Clicked="OnCopyOriginalClicked" />
+
+                <Button Text="复制反码"
+                        Grid.Column="1"
+                        CornerRadius="8"
+                        BackgroundColor="#7B61FF"
+                        TextColor="White"
+                        FontAttributes="Bold"
+                        Clicked="OnCopyInverseClicked" />
+
+                <Button Text="复制补码"
+                        Grid.Column="2"
+                        CornerRadius="8"
+                        BackgroundColor="#7B61FF"
+                        TextColor="White"
+                        FontAttributes="Bold"
+                        Clicked="OnCopyComplementClicked" />
+
+                <Button Text="粘贴"
+                        Grid.Column="3"
+                        CornerRadius="8"
+                        BackgroundColor="#F5A623"
+                        TextColor="White"
+                        FontAttributes="Bold"
+                        Clicked="OnPasteClicked" />
+            </Grid>
+
+            <Button Text="清空"
+                    CornerRadius="8"
+                    BackgroundColor="#D0021B"
+                    TextColor="White"
+                    FontAttributes="Bold"
+                    Clicked="OnClearClicked" />
+
+            <StackLayout Margin="0,20,0,0" Spacing="6">
+
+                <Label Text="说明：" FontAttributes="Bold" FontSize="Medium" TextColor="#222222" />
+
+                <Label Text="原码表示方法：最高位为符号位，1 表示负数，0 表示正数。其余比特位表示数值。" FontSize="Small" TextColor="#555555" />
+                <Label Text="反码表示方法：正数的反码是其本身，负数的反码为在原码的基础上，符号位不变，其余位取反。" FontSize="Small" TextColor="#555555" />
+                <Label Text="补码表示方法：正数的补码就是其本身，负数的补码为在原码的基础上，符号位不变，其余位取反，再+1（即在反码的基础上+1）。" FontSize="Small" TextColor="#555555" />
+                <Label Text="位数：整数的二进制比特位数，可以输入整数的值的范围为 [-2^(n-1) , 2^(n-1) - 1] , 其中 n 为比特位数。" FontSize="Small" TextColor="#555555" />
+
+            </StackLayout>
+
+        </StackLayout>
+    </ScrollView>
+</ContentPage>

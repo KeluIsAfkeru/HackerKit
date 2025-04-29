@@ -1,0 +1,26 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<popup:PopupPage xmlns="http://xamarin.com/schemas/2014/forms"
+                 xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+                 xmlns:popup="clr-namespace:Rg.Plugins.Popup.Pages;assembly=Rg.Plugins.Popup"
+                 x:Class="HackerKit.Views.ToastPopupPage"
+                 BackgroundColor="Transparent"
+                 CloseWhenBackgroundIsClicked="False"
+                 BackgroundInputTransparent="True">
+
+    <StackLayout VerticalOptions="End" HorizontalOptions="Center" Padding="20" Margin="0,0,0,40">
+        <Frame x:Name="ToastFrame"
+               Padding="15"
+               CornerRadius="20"
+               BackgroundColor="#333"
+               HasShadow="True"
+               Opacity="0"
+               TranslationY="50">
+            <Label x:Name="MessageLabel"
+                   TextColor="White"
+                   FontSize="16"
+                   HorizontalTextAlignment="Center"
+                   LineBreakMode="WordWrap" />
+        </Frame>
+    </StackLayout>
+
+</popup:PopupPage>
