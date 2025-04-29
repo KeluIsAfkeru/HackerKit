@@ -6,7 +6,6 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Numerics;
-using System.Text;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 
@@ -37,9 +36,7 @@ namespace HackerKit.Services
 					WriteSingleField(cos, tag, list[i]);
 			}
 			else
-			{
-				WriteSingleField(cos, tag, value);
-			}
+			WriteSingleField(cos, tag, value);
 		}
 
 		private static void WriteSingleField(CodedOutputStream cos, int tag, object value)
@@ -121,13 +118,10 @@ namespace HackerKit.Services
 				object value = ReadField(cis, wireType);
 				if (value == null) continue;
 
-				// 如果该tag已经存在，转成List存储重复字段
 				if (proto.TryGetValue(tag, out var exist))
 				{
 					if (exist is IList list)
-					{
 						list.Add(value);
-					}
 					else
 					{
 						var newList = new List<object> { exist, value };
@@ -135,9 +129,7 @@ namespace HackerKit.Services
 					}
 				}
 				else
-				{
 					proto.SetField(tag, value);
-				}
 			}
 
 			return proto;

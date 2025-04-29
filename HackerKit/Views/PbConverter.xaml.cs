@@ -63,7 +63,9 @@ namespace HackerKit.Views
 			try
 			{
 				var hex = input.ParseHexWithSpaces();
-				var proto = ProtobufService.Decode(hex);
+				var parseRootHead = ProtobufService.TryParseWithHead(hex);
+				var proto = ProtobufService.DeepParseHexProtos(parseRootHead);
+				//var proto = ProtobufService.Decode(hex);
 				var json = proto.ToJson();
 
 				ResultEditor.Text = json;

@@ -43,7 +43,6 @@ public class Proto : IReadOnlyDictionary<int, object>
 		}
 	}
 
-
 	public byte[]? Head
 	{
 		get => head;
@@ -60,7 +59,7 @@ public class Proto : IReadOnlyDictionary<int, object>
 		_fields = fields ?? new Dictionary<int, object>();
 	}
 
-	public JToken pbJson => JToken.Parse(this.ToJson()); //返回一个JSON的动态对象（没有递归解析hex）
+	public JToken pbJson => JToken.Parse(ToJson()); //返回一个JSON的动态对象（没有递归解析hex）
 
 	public IEnumerable<int> Keys => _fields.Keys;
 
@@ -80,9 +79,10 @@ public class Proto : IReadOnlyDictionary<int, object>
 
 	public byte[] ToBuffer() => ProtobufService.Encode(this);
 
-	public string ToJson() => JsonConvert.SerializeObject(ToJsonObject(this), Formatting.Indented);
+	public string ToJson(bool isShowHead = false)
+	=> JsonConvert.SerializeObject(ToJsonObject(this, isShowHead), Formatting.Indented);
 
-	private static object? ToJsonObject(object? obj)
+	private static object? ToJsonObject(object? obj, bool isShowHead)
 	{
 		if (obj == null) return null;
 
@@ -121,15 +121,27 @@ public class Proto : IReadOnlyDictionary<int, object>
 				}
 			case Proto proto:
 				{
-					var dict = new Dictionary<string, object?>(proto.Count);
+					bool hasHead = isShowHead && proto.Head != null && proto.Head.Length > 0;
 					var keys = proto.Keys.ToList();
 					keys.Sort();
+					var decodedDict = new Dictionary<string, object?>(proto.Count);
 					foreach (var key in keys)
 					{
 						var val = proto[key];
-						dict[key.ToString()] = ToJsonObject(val);
+						decodedDict[key.ToString()] = ToJsonObject(val, isShowHead);
 					}
-					return dict;
+					if (hasHead)
+					{
+						return new Dictionary<string, object?>
+						{
+							["head"] = BitConverter.ToString(proto.Head!).Replace("-", "").ToLowerInvariant(),
+							["decoded"] = decodedDict
+						};
+					}
+					else
+					{
+						return decodedDict;
+					}
 				}
 			case IList list:
 				{
@@ -163,7 +175,7 @@ public class Proto : IReadOnlyDictionary<int, object>
 					}
 					var arr = new object?[count];
 					for (int i = 0; i < count; i++)
-						arr[i] = ToJsonObject(list[i]);
+						arr[i] = ToJsonObject(list[i], isShowHead);
 					return arr;
 				}
 			case BigInteger bi:
