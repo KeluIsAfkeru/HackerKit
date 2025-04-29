@@ -17,6 +17,7 @@
   <ItemGroup>
     <PackageReference Include="Google.Protobuf" Version="3.30.2" />
     <PackageReference Include="JWT" Version="11.0.0" />
+    <PackageReference Include="Microsoft.CSharp" Version="4.7.0" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
     <PackageReference Include="protobuf-net" Version="3.2.52" />
     <PackageReference Include="Rg.Plugins.Popup" Version="2.1.0" />

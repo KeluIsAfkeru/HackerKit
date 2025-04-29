@@ -57,7 +57,7 @@ namespace HackerKit.Services
 			return System.Text.RegularExpressions.Regex.IsMatch(s, @"^[A-Za-z0-9+/]*={0,2}$");
 		}
 
-		private static string StringToHex(this string input)
+		public static string StringToHex(this string input)
 		{
 			if (string.IsNullOrEmpty(input))
 				return input;
@@ -67,7 +67,7 @@ namespace HackerKit.Services
 
 			byte[] bytes = Encoding.UTF8.GetBytes(input);
 
-			string hexString = Convert.ToHexString(bytes);
+			string hexString = bytes.BytesToHex();
 
 			return $"hex-->{hexString}";
 		}
