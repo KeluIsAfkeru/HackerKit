@@ -32,13 +32,13 @@ namespace HackerKit.Services
 
 			var subproto2 = new Proto();
 
-			string f7 = parameters.ContainsKey("f7") ? parameters["f7"].ToString()! : "{\"info\": \"枫叶嘿壳\"}";
+			string f7 = parameters.ContainsKey("f7") ? parameters["f7"].ToString()! : "{\"info\": \"powered by ono\"}";
 			subproto2.SetField(7, f7);
 
 			string f8 = parameters.ContainsKey("f8") ? parameters["f8"].ToString()! : GenerateMD5(GenerateUUID());
 			subproto2.SetField(8, f8);
 
-			string f4 = parameters.ContainsKey("f4") ? parameters["f4"].ToString()! : "默认文件名";
+			string f4 = parameters.ContainsKey("f4") ? parameters["f4"].ToString()! : "枫叶嘿壳";
 			subproto2.SetField(4, f4);
 
 			string f3 = parameters.ContainsKey("f3") ? parameters["f3"].ToString()! : BigInteger.Pow(1024, 6).ToString();

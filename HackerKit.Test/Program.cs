@@ -35,7 +35,8 @@ Console.WriteLine($"【编码后的Protocal Buffer】：{encode_hex}\n");
 
 var parameters = new Dictionary<string, object>
 {
-	["f4"] = "Ad钙嘿壳",
+	["f4"] = "枫叶嘿壳.mp4",
+	["f3"] = 1234567890UL,
 	//["f7"] = "{\"info\": \"info\"}",
 	//["f1"] = 10,
 	//["subproto2F1"] = 200,

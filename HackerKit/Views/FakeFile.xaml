@@ -1,0 +1,96 @@
+﻿<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="HackerKit.Views.FakeFile"
+             Title="假文件Protobuf生成器"
+             BackgroundColor="White"
+             Visual="Material">
+
+    <ScrollView>
+        <StackLayout Padding="24" Spacing="20">
+
+            <Label Text="文件名"
+                   FontAttributes="Bold"
+                   FontSize="Medium"
+                   TextColor="#222222" />
+
+            <Frame HasShadow="True" CornerRadius="12" Padding="12" BackgroundColor="#F0F0F0">
+                <Entry x:Name="FileNameEntry"
+                       Placeholder="请输入文件名"
+                       Keyboard="Text"
+                       FontSize="14"
+                       TextColor="#333333" />
+            </Frame>
+
+            <Label Text="文件大小(byte)"
+                   FontAttributes="Bold"
+                   FontSize="Medium"
+                   TextColor="#222222" />
+
+            <Frame HasShadow="True" CornerRadius="12" Padding="12" BackgroundColor="#F0F0F0">
+                <Entry x:Name="FileSizeEntry"
+                       Placeholder="请输入文件大小"
+                       Keyboard="Numeric"
+                       FontSize="14"
+                       TextColor="#333333" />
+            </Frame>
+
+            <Grid ColumnSpacing="15" RowSpacing="10" HorizontalOptions="Center">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+
+                <Button Text="生成"
+                        Grid.Column="0"
+                        CornerRadius="8"
+                        BackgroundColor="#4A90E2"
+                        TextColor="White"
+                        FontAttributes="Bold"
+                        Clicked="OnGenerateClicked" />
+
+                <Button Text="清除"
+                        Grid.Column="1"
+                        CornerRadius="8"
+                        BackgroundColor="#D0021B"
+                        TextColor="White"
+                        FontAttributes="Bold"
+                        Clicked="OnClearClicked" />
+
+                <Button Text="粘贴"
+                        Grid.Column="2"
+                        CornerRadius="8"
+                        BackgroundColor="#F5A623"
+                        TextColor="White"
+                        FontAttributes="Bold"
+                        Clicked="OnPasteClicked" />
+
+            </Grid>
+
+            <Label Text="生成结果"
+                   FontAttributes="Bold"
+                   FontSize="Medium"
+                   TextColor="#222222" />
+
+            <Frame HasShadow="True" CornerRadius="12" Padding="12" BackgroundColor="#F0F0F0">
+                <Editor x:Name="ResultEditor"
+                        AutoSize="TextChanges"
+                        HeightRequest="140"
+                        FontFamily="Courier New"
+                        FontSize="14"
+                        TextColor="#333333"
+                        IsReadOnly="True" />
+            </Frame>
+
+            <Button Text="复制"
+                        Grid.Column="3"
+                        CornerRadius="8"
+                        BackgroundColor="#7B61FF"
+                        TextColor="White"
+                        FontAttributes="Bold"
+                        Clicked="OnCopyClicked" />
+
+        </StackLayout>
+    </ScrollView>
+</ContentPage>
