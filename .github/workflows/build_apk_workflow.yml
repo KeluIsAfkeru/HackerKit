@@ -1,0 +1,37 @@
+name: Build HackerKit APK
+
+on: [push]
+
+jobs:
+  build:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Java 11
+        uses: actions/setup-java@v3
+        with:
+          java-version: '11'
+          distribution: 'microsoft'
+
+      - name: Restore NuGet packages
+        run: nuget restore HackerKit.sln
+
+      - name: Find MSBuild Path
+        id: msbuild
+        shell: pwsh
+        run: |
+          $msbuildPath = vswhere -latest -products * -requires Microsoft.Component.MSBuild -find MSBuild\**\Bin\MSBuild.exe
+          echo "MSBUILD_PATH=$msbuildPath" | Out-File -FilePath $env:GITHUB_ENV -Encoding utf8 -Append
+          echo "Found msbuild: $msbuildPath"
+
+      - name: Build Android Project
+        shell: pwsh
+        run: |
+          & "${env:MSBUILD_PATH}" HackerKit.Android/HackerKit.Android.csproj /t:SignAndroidPackage /p:Configuration=Release
+
+      - name: Upload APK
+        uses: actions/upload-artifact@v4
+        with:
+          name: HackerKit.apk
+          path: HackerKit.Android\bin\Release\*.apk
