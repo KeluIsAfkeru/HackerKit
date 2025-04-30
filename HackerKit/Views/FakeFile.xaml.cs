@@ -14,41 +14,32 @@ namespace HackerKit.Views
 
 		private async void OnGenerateClicked(object sender, EventArgs e)
 		{
-			var fileName = FileNameEntry.Text?.Trim() ?? "";
-			var fileSizeStr = FileSizeEntry.Text?.Trim() ?? "";
+			var fileName = FileNameEntry.Text?.Trim();
+			var fileSizeStr = FileSizeEntry.Text?.Trim();
 
-			if (string.IsNullOrEmpty(fileName))
-			{
-				await ToastService.ShowToast("请输入文件名");
-				return;
-			}
+			var parameters = new System.Collections.Generic.Dictionary<string, object>();
 
-			if (!ulong.TryParse(fileSizeStr, out ulong fileSize) || fileSize == 0)
-			{
-				await ToastService.ShowToast("请输入有效的文件大小（正整数）");
-				return;
-			}
+			if (!string.IsNullOrEmpty(fileName))
+				parameters["f4"] = fileName;
+
+			if (ulong.TryParse(fileSizeStr, out ulong fileSize) && fileSize > 0)
+				parameters["f3"] = fileSize.ToString();
 
 			try
 			{
-				var parameters = new System.Collections.Generic.Dictionary<string, object>
-				{
-					["f4"] = fileName,
-					["f3"] = fileSize
-				};
-
 				var result = FakeFileService.MakeFakeFileJson(parameters);
 
 				string jsonResult = Newtonsoft.Json.JsonConvert.SerializeObject(result, Newtonsoft.Json.Formatting.Indented);
 				ResultEditor.Text = jsonResult;
 
-				await ToastService.ShowToast("生成成功");
+				await ToastService.ShowToast("生成FakeFile成功辣~");
 			}
 			catch (Exception ex)
 			{
-				await ToastService.ShowToast($"生成失败：{ex.Message}");
+				await ToastService.ShowToast($"生成FakeFile失败惹~：{ex.Message}");
 			}
 		}
+
 
 		private void OnClearClicked(object sender, EventArgs e)
 		{

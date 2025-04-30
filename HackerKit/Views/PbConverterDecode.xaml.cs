@@ -8,9 +8,9 @@ using static Xamarin.Essentials.Permissions;
 
 namespace HackerKit.Views
 {
-	public partial class PbConverter : ContentPage
+	public partial class PbConverterDecode : ContentPage
 	{
-		public PbConverter()
+		public PbConverterDecode()
 		{
 			InitializeComponent();
 
@@ -27,30 +27,6 @@ namespace HackerKit.Views
 			for (int i = 0; i < bytes.Length; i++)
 				bytes[i] = Convert.ToByte(hex.Substring(i * 2, 2), 16);
 			return bytes;
-		}
-
-		private async void OnEncodeClicked(object sender, EventArgs e)
-		{
-			var input = InputEditor.Text?.Trim() ?? "";
-			if (string.IsNullOrEmpty(input))
-			{
-				await ToastService.ShowToast("请输入Protobuf字符串（JSON格式或Hex）");
-				return;
-			}
-
-			try
-			{
-				//var proto = ProtobufService.StrToProto(input); //将输入protobuf字符串反序列化成Proto
-				//var hexResult = proto.ToHex(); //转为Hex
-				var proto = ProtobufService.FromJson(input);
-				var hex = proto.ToHex();
-				ResultEditor.Text = hex;
-				await ToastService.ShowToast("编码成功，结果为Hex字符串");
-			}
-			catch (Exception ex)
-			{
-				await ToastService.ShowToast($"编码失败：{ex.Message}");
-			}
 		}
 
 		private async void OnDecodeClicked(object sender, EventArgs e)

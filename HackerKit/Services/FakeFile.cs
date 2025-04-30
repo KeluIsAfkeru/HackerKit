@@ -32,7 +32,7 @@ namespace HackerKit.Services
 
 			var subproto2 = new Proto();
 
-			string f7 = parameters.ContainsKey("f7") ? parameters["f7"].ToString()! : "{\"info\": \"powered by ono\"}";
+			string f7 = parameters.ContainsKey("f7") ? parameters["f7"].ToString()! : "{\"info\": \"我是嘿壳\"}";
 			subproto2.SetField(7, f7);
 
 			string f8 = parameters.ContainsKey("f8") ? parameters["f8"].ToString()! : GenerateMD5(GenerateUUID());
@@ -41,7 +41,7 @@ namespace HackerKit.Services
 			string f4 = parameters.ContainsKey("f4") ? parameters["f4"].ToString()! : "枫叶嘿壳";
 			subproto2.SetField(4, f4);
 
-			string f3 = parameters.ContainsKey("f3") ? parameters["f3"].ToString()! : BigInteger.Pow(1024, 6).ToString();
+			long f3 = parameters.ContainsKey("f3") ? Convert.ToInt64(parameters["f3"]) : (long)BigInteger.Pow(1024, 6);
 			subproto2.SetField(3, f3);
 
 			int subproto2F1 = parameters.ContainsKey("subproto2F1") ? Convert.ToInt32(parameters["subproto2F1"]) : 102;

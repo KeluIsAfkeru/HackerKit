@@ -35,13 +35,12 @@ Console.WriteLine($"【编码后的Protocal Buffer】：{encode_hex}\n");
 
 var parameters = new Dictionary<string, object>
 {
-	["f4"] = "枫叶嘿壳.mp4",
-	["f3"] = 1234567890UL,
+	["f4"] = "Admilk私房照.zip"
 	//["f7"] = "{\"info\": \"info\"}",
 	//["f1"] = 10,
 	//["subproto2F1"] = 200,
 	//["f2"] = Guid.NewGuid().ToString(),
-	//["f8"] = "MD5哈希字符串",
+	//["f8"] = "MD5哈",
 	//["f3"] = "大整数字符串"
 };
 var fakeFileObj = FakeFileService.MakeFakeFileJson(parameters);

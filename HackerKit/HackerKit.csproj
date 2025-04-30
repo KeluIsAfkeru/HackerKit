@@ -27,6 +27,12 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Compile Update="Views\PbConverterEncode.xaml.cs">
+      <DependentUpon>PbConverterEncode.xaml</DependentUpon>
+    </Compile>
+    <Compile Update="Views\PbConverterDecode.xaml.cs">
+      <DependentUpon>PbConverterDecode.xaml</DependentUpon>
+    </Compile>
     <Compile Update="Views\ToastPopupPage.xaml.cs">
       <DependentUpon>ToastPopupPage.xaml</DependentUpon>
     </Compile>
@@ -51,7 +57,7 @@
     <EmbeddedResource Update="Views\JwtTool.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
-    <EmbeddedResource Update="Views\PbConverter.xaml">
+    <EmbeddedResource Update="Views\PbConverterEncode.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
     <EmbeddedResource Update="Views\ToastPopupPage.xaml">

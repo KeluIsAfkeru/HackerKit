@@ -1,0 +1,95 @@
+﻿<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" xmlns:models="clr-namespace:HackerKit.Models"
+             x:Class="HackerKit.Views.PbConverterEncode"
+             Title="Protobuf与Hex互转"
+             BackgroundColor="White"
+             Visual="Material">
+
+    <ScrollView x:Name="MainScrollView">
+        <StackLayout Padding="24" Spacing="20">
+            <Label Text="输入Protobuf的数据，选择“编码”将其转换为Hex"
+                   FontSize="Medium"
+                   TextColor="#666666"
+                   HorizontalOptions="Center"
+                   HorizontalTextAlignment="Center" />
+
+            <Label Text="输入内容"
+                   FontAttributes="Bold"
+                   FontSize="Medium"
+                   TextColor="#222222" />
+
+            <Frame HasShadow="True" CornerRadius="12" Padding="12" BackgroundColor="#F0F0F0">
+                <models:ScrollableEditor x:Name="InputEditor"
+                        AutoSize="TextChanges"
+                        HeightRequest="250"
+                        FontFamily="Courier New"
+                        FontSize="14"
+                        TextColor="#333333"
+                        Placeholder="输入pb或者hex字符串"
+                        Keyboard="Text" />
+            </Frame>
+
+            <Grid ColumnSpacing="15" RowSpacing="10" HorizontalOptions="FillAndExpand">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+
+                <Button Text="编码"
+                        Grid.Column="0"
+                        CornerRadius="8"
+                        BackgroundColor="#4A90E2"
+                        TextColor="White"
+                        FontAttributes="Bold"
+                        HorizontalOptions="FillAndExpand"
+                        Clicked="OnEncodeClicked" />
+
+                <Button Text="清空"
+                        Grid.Column="1"
+                        CornerRadius="8"
+                        BackgroundColor="#D0021B"
+                        TextColor="White"
+                        FontAttributes="Bold"
+                        HorizontalOptions="FillAndExpand"
+                        Clicked="OnClearClicked" />
+
+                <Button Text="粘贴"
+                        Grid.Column="2"
+                        CornerRadius="8"
+                        BackgroundColor="#F5A623"
+                        TextColor="White"
+                        FontAttributes="Bold"
+                        HorizontalOptions="FillAndExpand"
+                        Clicked="OnPasteClicked" />
+
+                <Button Text="复制结果"
+                        Grid.Column="0"
+                        Grid.Row="1"
+                        Grid.ColumnSpan="3"
+                        CornerRadius="8"
+                        BackgroundColor="#7B68EE"
+                        TextColor="White"
+                        FontAttributes="Bold"
+                        HorizontalOptions="FillAndExpand"
+                        Clicked="OnCopyClicked" />
+            </Grid>
+
+            <Label Text="转换结果"
+                   FontAttributes="Bold"
+                   FontSize="Medium"
+                   TextColor="#222222" />
+
+            <Frame HasShadow="True" CornerRadius="12" Padding="12" BackgroundColor="#F0F0F0">
+                <models:ScrollableEditor x:Name="ResultEditor"
+                        AutoSize="TextChanges"
+                        HeightRequest="350"
+                        FontFamily="Courier New"
+                        FontSize="14"
+                        TextColor="#333333"
+                        IsReadOnly="True" />
+            </Frame>
+
+        </StackLayout>
+    </ScrollView>
+</ContentPage>

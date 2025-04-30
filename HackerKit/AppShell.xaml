@@ -21,7 +21,8 @@
     <MenuItem Text="嘿壳工具" />
 
     <FlyoutItem Title="Protobuf编码解码" FlyoutIcon="icon_encode.png" Route="base64">
-        <ShellContent Title="Protobuf编码解码" ContentTemplate="{DataTemplate views:PbConverter}" Route="encoding_pb_hex_page" />
+        <ShellContent Title="Protobuf编码" ContentTemplate="{DataTemplate views:PbConverterEncode}" Route="encoding_pb_encode_hex_page" />
+        <ShellContent Title="Protobuf解码" ContentTemplate="{DataTemplate views:PbConverterDecode}" Route="encoding_pb_decode_hex_page" />
     </FlyoutItem>
 
     <FlyoutItem Title="QQ FakeFile生成" FlyoutIcon="icon_encode.png" Route="base64">

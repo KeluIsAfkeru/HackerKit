@@ -460,20 +460,16 @@ namespace HackerKit.Services
 
 		private static object TryParseOrKeep(byte[] bytes, Func<byte[], object> makeOriginal)
 		{
-			// 先尝试将字节解码为UTF-8字符串
 			try
 			{
 				string str = System.Text.Encoding.UTF8.GetString(bytes);
 
-				// 检查是否是可打印文本
 				if (str.IsPrintableString())
 					return makeOriginal(bytes);
 
-				// 检查是否是Base64字符串
 				if (str.IsBase64String())
 					return makeOriginal(bytes);
 
-				// 检查是否是JSON字符串
 				if ((str.StartsWith("{") && str.EndsWith("}")) ||
 					(str.StartsWith("[") && str.EndsWith("]")))
 				{
@@ -487,7 +483,6 @@ namespace HackerKit.Services
 			}
 			catch { }
 
-			// 如果不是文本数据，再尝试作为Protobuf解析
 			try
 			{
 				var parsed = TryParseWithHead(bytes);
