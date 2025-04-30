@@ -14,7 +14,7 @@ namespace HackerKit.Views
 		{
 			InitializeComponent();
 
-			DecodeModePicker.SelectedIndex = 0;
+			DecodeModePicker.SelectedIndex = 1;
 		}
 
 		//Hex转byte array
@@ -117,7 +117,6 @@ namespace HackerKit.Views
 				await ToastService.ShowToast($"解码失败：{ex.Message}");
 			}
 		}
-
 
 		private void OnClearClicked(object sender, EventArgs e)
 		{

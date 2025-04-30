@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Text;
 
 namespace HackerKit.Services
@@ -41,6 +42,40 @@ namespace HackerKit.Services
 				bytes[i] = Convert.ToByte(hex.Substring(i * 2, 2), 16);
 			}
 			return bytes;
+		}
+
+		public static bool IsProtobuf(this byte[] data)
+		{
+			if (data.Length < 2) return false;
+
+			bool hasValidTags = false;
+			for (int i = 0; i < Math.Min(10, data.Length - 1); i++)
+			{
+				byte tag = data[i];
+				if ((tag & 0x07) <= 5 && (tag >> 3) > 0 && (tag >> 3) < 100)
+				{
+					hasValidTags = true;
+					break;
+				}
+			}
+
+			return hasValidTags;
+		}
+
+		public static bool TryGetString(this byte[] data, out string result)
+		{
+			result = null;
+			if (data == null || data.Length == 0) return false;
+
+			try
+			{
+				result = System.Text.Encoding.UTF8.GetString(data);
+				return true;
+			}
+			catch
+			{
+				return false;
+			}
 		}
 	}
 }

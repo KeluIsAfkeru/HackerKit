@@ -82,6 +82,17 @@
                         TextColor="White"
                         FontAttributes="Bold"
                         Clicked="OnPasteClicked" />
+
+                <Button Text="复制结果"
+                        Grid.Column="0"
+                        Grid.Row="1"
+                        Grid.ColumnSpan="4"
+                        CornerRadius="8"
+                        BackgroundColor="#7B68EE"
+                        TextColor="White"
+                        FontAttributes="Bold"
+                        HorizontalOptions="FillAndExpand"
+                        Clicked="OnCopyClicked" />
             </Grid>
 
             <Label Text="转换结果"
@@ -98,15 +109,6 @@
                         TextColor="#333333"
                         IsReadOnly="True" />
             </Frame>
-
-            <Button Text="复制结果"
-                    HorizontalOptions="Center"
-                    WidthRequest="200"
-                    CornerRadius="8"
-                    BackgroundColor="#7B61FF"
-                    TextColor="White"
-                    FontAttributes="Bold"
-                    Clicked="OnCopyClicked" />
 
         </StackLayout>
     </ScrollView>

@@ -72,5 +72,19 @@ namespace HackerKit.Services
 			return $"hex-->{hexString}";
 		}
 
+		public static bool IsJsonString(this string str)
+		{
+			if (string.IsNullOrEmpty(str)) return false;
+			str = str.Trim();
+			return (str.StartsWith("{") && str.EndsWith("}")) ||
+				   (str.StartsWith("[") && str.EndsWith("]")) ||
+				   str.Contains("\\\"") || 
+				   (str.Contains("\"") && (str.Contains(":") || str.Contains(","))); 
+		}
+
+		public static bool ContainsNonAsciiCharacters(this string str)
+		{
+			return str.Any(c => c > 127);
+		}
 	}
 }
