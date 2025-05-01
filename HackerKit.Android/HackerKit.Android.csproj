@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-
+<Project DefaultTargets="Build" ToolsVersion="4.0"
+  xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
@@ -22,7 +22,8 @@
     <AndroidEnableSGenConcurrent>true</AndroidEnableSGenConcurrent>
     <AndroidUseAapt2>true</AndroidUseAapt2>
     <AndroidHttpClientHandlerType>Xamarin.Android.Net.AndroidClientHandler</AndroidHttpClientHandlerType>
-    <NuGetPackageImportStamp></NuGetPackageImportStamp>
+    <NuGetPackageImportStamp>
+    </NuGetPackageImportStamp>
   </PropertyGroup>
 
   <!-- Debug and Release Configuration -->
@@ -37,12 +38,12 @@
     <AndroidLinkMode>None</AndroidLinkMode>
   </PropertyGroup>
 
-  <!-- Release Configuration with AnyCPU -->
+  <!-- Release Configuration with ARM64 and others -->
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
     <DebugType>portable</DebugType>
     <Optimize>true</Optimize>
-    <OutputPath>bin\Release</OutputPath>    <!-- Default OutputPath for Release configuration -->
+    <OutputPath>bin\Release</OutputPath>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <AndroidManagedSymbols>true</AndroidManagedSymbols>
@@ -57,37 +58,26 @@
   <!-- Custom Configuration for ARM64 Release -->
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|arm64' ">
     <OutputPath>bin\Release\arm64</OutputPath>    <!-- Custom output path for ARM64 -->
-    <AndroidSupportedAbis>arm64</AndroidSupportedAbis>    <!-- Only ARM64 ABI -->
   </PropertyGroup>
 
   <!-- Custom Configuration for ARM32 Release -->
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|arm32' ">
     <OutputPath>bin\Release\arm32</OutputPath>    <!-- Custom output path for ARM32 -->
-    <AndroidSupportedAbis>arm32</AndroidSupportedAbis>    <!-- Only ARM32 ABI -->
-  </PropertyGroup>
-
-  <!-- Custom Configuration for x86 Release -->
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x86' ">
-    <OutputPath>bin\Release\x86</OutputPath>    <!-- Custom output path for x86 -->
-    <AndroidSupportedAbis>x86</AndroidSupportedAbis>    <!-- Only x86 ABI -->
-  </PropertyGroup>
-
-  <!-- Custom Configuration for x86_64 Release -->
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x86_64' ">
-    <OutputPath>bin\Release\x86_64</OutputPath>    <!-- Custom output path for x86_64 -->
-    <AndroidSupportedAbis>x86_64</AndroidSupportedAbis>    <!-- Only x86_64 ABI -->
-  </PropertyGroup>
-
-  <!-- Custom Configuration for AMD64 Release -->
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|amd64' ">
-    <OutputPath>bin\Release\amd64</OutputPath>    <!-- Custom output path for AMD64 -->
-    <AndroidSupportedAbis>amd64</AndroidSupportedAbis>    <!-- Only AMD64 ABI -->
   </PropertyGroup>
 
   <!-- Custom Configuration for AMD32 Release -->
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|amd32' ">
     <OutputPath>bin\Release\amd32</OutputPath>    <!-- Custom output path for AMD32 -->
-    <AndroidSupportedAbis>amd32</AndroidSupportedAbis>    <!-- Only AMD32 ABI -->
+  </PropertyGroup>
+
+  <!-- Custom Configuration for AMD64 Release -->
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|amd64' ">
+    <OutputPath>bin\Release\amd64</OutputPath>    <!-- Custom output path for AMD64 -->
+  </PropertyGroup>
+
+  <!-- Custom Configuration for x86 Release -->
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x86' ">
+    <OutputPath>bin\Release\x86</OutputPath>    <!-- Custom output path for x86 -->
   </PropertyGroup>
 
   <ItemGroup>

@@ -20,11 +20,6 @@ jobs:
           java-version: "11"
           distribution: "microsoft"
 
-      # 仁济
-      - name: Clean Project
-        run: |
-          & "${env:MSBUILD_PATH}" HackerKit.Android/HackerKit.Android.csproj /t:Clean
-
       # 缓存 NuGet 包以加速构建
       - name: Cache NuGet packages
         uses: actions/cache@v3
