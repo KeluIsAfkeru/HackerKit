@@ -32,7 +32,7 @@ jobs:
 
       # 恢复 NuGet 包
       - name: Restore NuGet packages
-        run: dotnet restore HackerKit.sln
+        run: nuget restore HackerKit.sln
 
       # 查找 MSBuild 路径
       - name: Find MSBuild Path
@@ -43,15 +43,34 @@ jobs:
           echo "MSBUILD_PATH=$msbuildPath" | Out-File -FilePath $env:GITHUB_ENV -Encoding utf8 -Append
           echo "Found msbuild: $msbuildPath"
 
-      # 获取并递增版本号
-      - name: Get and Increment Version Number
+      - name: Get and Increment Version from Release
         id: version
+        shell: pwsh
         run: |
-          $currentVersion = "1.0.0"
-          $versionParts = $currentVersion.Split('.')
-          $patch = [int]$versionParts[2] + 1
-          $newVersion = "$($versionParts[0]).$($versionParts[1]).$patch"
-          echo "New version: $newVersion"
+          # 获取最新Release标签（格式要求：vX.Y.Z）
+          $latestTag = git describe --tags --abbrev=0 --match "v*" 2>$null
+          if (-not $latestTag) {
+            Write-Warning "No existing release tag found. Starting from v0.0.0"
+            $currentVersion = "0.0.0"
+          } else {
+            # 剥离标签前缀（例如将 "v1.2.3" 转换为 "1.2.3"）
+            $currentVersion = $latestTag.TrimStart('v')
+          }
+
+          # 版本号格式校验
+          if ($currentVersion -notmatch '^\d+\.\d+\.\d+$') {
+            throw "Invalid version format: $currentVersion"
+          }
+
+          # 拆分并递增修订号
+          $parts = $currentVersion.Split('.')
+          $major = [int]$parts[0]
+          $minor = [int]$parts[1]
+          $patch = [int]$parts[2] + 1
+          $newVersion = "$major.$minor.$patch"
+
+          # 输出并注入环境变量
+          echo "Previous version: $currentVersion → New version: $newVersion"
           echo "NEW_VERSION=$newVersion" | Out-File -FilePath $env:GITHUB_ENV -Encoding utf8 -Append
 
       # 构建 Android ARM64
