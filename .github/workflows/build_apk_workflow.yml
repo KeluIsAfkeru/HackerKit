@@ -7,7 +7,7 @@ on:
 
 jobs:
   build:
-    if: contains(github.event.head_commit.message, 'build:')  # 如果提交信息包含 'build:' 就触发工作流
+    if: contains(github.event.head_commit.message, 'build:')
     runs-on: windows-latest
 
     steps:
