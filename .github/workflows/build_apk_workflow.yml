@@ -4,14 +4,13 @@ on:
   push:
     branches:
       - main
+    tags:
+      - 'v*'  # 仅在推送以 v 开头的标签时触发
 
 jobs:
   build:
     if: contains(github.event.head_commit.message, 'build:')
     runs-on: windows-latest
-    permissions:
-      contents: write
-      pull-requests: write
 
     steps:
       - uses: actions/checkout@v4
@@ -47,110 +46,79 @@ jobs:
           echo "Found msbuild: $msbuildPath"
 
       # 获取并递增版本号
-      - name: Get and Increment Version from Release
+      - name: Get and Increment Version Number
         id: version
-        shell: pwsh
         run: |
-          # 获取最近的版本标签
-          $latestTag = git describe --tags --abbrev=0 --match "v*" 2>$null
-          $gitExitCode = $LASTEXITCODE
-
-          if ($gitExitCode -ne 0) {
-            Write-Warning "No existing release tag found. Starting from v0.0.0"
-            $currentVersion = "0.0.0"
+          # 获取当前标签版本号
+          $tag = $env:GITHUB_REF
+          if ($tag -match 'refs/tags/v(\d+)\.(\d+)\.(\d+)') {
+            $major = $matches[1]
+            $minor = $matches[2]
+            $patch = [int]$matches[3] + 1
           } else {
-            $currentVersion = $latestTag.TrimStart('v')
+            # 默认版本号（如果没有标签）
+            $major = 1
+            $minor = 0
+            $patch = 0
           }
-
-          # 确保版本号格式正确
-          if ($currentVersion -notmatch '^\d+\.\d+\.\d+$') {
-            Write-Error "Invalid version format: $currentVersion"
-            exit 1
-          }
-
-          # 递增 Patch 版本号
-          $parts = $currentVersion.Split('.')
-          $major = [int]$parts[0]
-          $minor = [int]$parts[1]
-          $patch = [int]$parts[2] + 1
           $newVersion = "$major.$minor.$patch"
-
-          echo "Previous version: $currentVersion → New version: $newVersion"
+          echo "New version: $newVersion"
           echo "NEW_VERSION=$newVersion" | Out-File -FilePath $env:GITHUB_ENV -Encoding utf8 -Append
-          exit 0
 
-      # 构建各个平台 APK
+      # 构建 Android ARM64
       - name: Build Android ARM64
         shell: pwsh
         run: |
           & "${env:MSBUILD_PATH}" HackerKit.Android/HackerKit.Android.csproj /t:SignAndroidPackage /p:Configuration=Release /p:Platform=arm64 /p:Version=$env:NEW_VERSION
 
+      # 构建 Android AMD64
       - name: Build Android AMD64
         shell: pwsh
         run: |
           & "${env:MSBUILD_PATH}" HackerKit.Android/HackerKit.Android.csproj /t:SignAndroidPackage /p:Configuration=Release /p:Platform=amd64 /p:Version=$env:NEW_VERSION
 
+      # 构建 Android ARM32
       - name: Build Android ARM32
         shell: pwsh
         run: |
           & "${env:MSBUILD_PATH}" HackerKit.Android/HackerKit.Android.csproj /t:SignAndroidPackage /p:Configuration=Release /p:Platform=arm32 /p:Version=$env:NEW_VERSION
 
+      # 构建 Android AMD32
       - name: Build Android AMD32
         shell: pwsh
         run: |
           & "${env:MSBUILD_PATH}" HackerKit.Android/HackerKit.Android.csproj /t:SignAndroidPackage /p:Configuration=Release /p:Platform=amd32 /p:Version=$env:NEW_VERSION
 
-      # 获取提交记录并生成 Release 说明
-      - name: Get Commit History Between Builds
-        id: commit_history
-        run: |
-          # 获取上次构建的标签
-          LAST_TAG=$(git describe --tags --abbrev=0 --match "v*")
-          
-          # 获取当前提交ID
-          CURRENT_COMMIT=$(git rev-parse HEAD)
-          
-          # 获取上次构建与当前提交之间的所有提交记录
-          COMMIT_HISTORY=$(git log $LAST_TAG..$CURRENT_COMMIT --pretty=format:"%h - %s (%an)")
-
-          echo "Commit History between builds:"
-          echo "$COMMIT_HISTORY"
-          
-          # 将提交记录保存到环境变量中，供后续使用
-          echo "COMMIT_HISTORY=$COMMIT_HISTORY" >> $GITHUB_ENV
-
-      # 检查标签是否存在并创建标签
-      - name: Check if Git tag exists and create tag
-        id: check_tag
-        uses: actions/github-script@v6
+      # 上传 ARM64 APK
+      - name: Upload ARM64 APK
+        uses: actions/upload-artifact@v4
         with:
-          script: |
-            const version = process.env.NEW_VERSION
-            try {
-              // 检查标签是否已存在
-              const tagExists = await github.rest.git.getRef({
-                owner: context.repo.owner,
-                repo: context.repo.repo,
-                ref: `refs/tags/v${version}`
-              })
-              console.log(`Tag v${version} already exists!`)
-            } catch (error) {
-              if (error.status === 404) {
-                console.log(`Tag v${version} does not exist. Creating tag...`)
-                // 创建标签
-                await github.rest.git.createRef({
-                  owner: context.repo.owner,
-                  repo: context.repo.repo,
-                  ref: `refs/tags/v${version}`,
-                  sha: context.sha
-                })
-                console.log(`Tag v${version} created successfully!`)
-              } else {
-                throw error
-              }
-            }
+          name: HackerKit-arm64.apk
+          path: HackerKit.Android/bin/Release/arm64/*.apk
 
-      - name: Create GitHub Release and Upload APKs
+      # 上传 AMD64 APK
+      - name: Upload AMD64 APK
+        uses: actions/upload-artifact@v4
+        with:
+          name: HackerKit-amd64.apk
+          path: HackerKit.Android/bin/Release/amd64/*.apk
+
+      # 上传 ARM32 APK
+      - name: Upload ARM32 APK
+        uses: actions/upload-artifact@v4
+        with:
+          name: HackerKit-arm32.apk
+          path: HackerKit.Android/bin/Release/arm32/*.apk
+
+      # 上传 AMD32 APK
+      - name: Upload AMD32 APK
+        uses: actions/upload-artifact@v4
+        with:
+          name: HackerKit-amd32.apk
+          path: HackerKit.Android/bin/Release/amd32/*.apk
+
+      # 创建 GitHub Release 并上传所有 APK
+      - name: Create GitHub Release
         if: startsWith(github.ref, 'refs/tags/')
         uses: softprops/action-gh-release@v1
         with:
@@ -159,6 +127,3 @@ jobs:
             HackerKit.Android/bin/Release/amd64/*.apk
             HackerKit.Android/bin/Release/arm32/*.apk
             HackerKit.Android/bin/Release/amd32/*.apk
-          body: |
-            ### New Commit History:
-            ${{ env.COMMIT_HISTORY }}
