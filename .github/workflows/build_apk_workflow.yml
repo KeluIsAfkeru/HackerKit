@@ -34,7 +34,7 @@ jobs:
         id: version
         run: |
           # 获取当前版本号（从 Git 标签或者版本文件）
-          $currentVersion = "v1.0.0"  # 这里可以改为从某个文件读取版本号或者使用 Git 标签
+          $currentVersion = "1.0.0"  # 这里可以改为从某个文件读取版本号或者使用 Git 标签
           $versionParts = $currentVersion.Substring(1).Split('.')
           $patch = [int]$versionParts[2] + 1
           $newVersion = "v$($versionParts[0]).$($versionParts[1]).$patch"
