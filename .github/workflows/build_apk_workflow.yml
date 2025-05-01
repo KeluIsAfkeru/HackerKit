@@ -4,8 +4,8 @@ on:
   push:
     branches:
       - main
-    tags:
-      - 'v*'
+    paths:
+      - '**/build/**'
 
 jobs:
   build:
@@ -31,19 +31,57 @@ jobs:
           echo "MSBUILD_PATH=$msbuildPath" | Out-File -FilePath $env:GITHUB_ENV -Encoding utf8 -Append
           echo "Found msbuild: $msbuildPath"
 
-      - name: Build Android Project
+      - name: Get and Increment Version Number
+        id: version
+        run: |
+          # 获取当前版本号（从 Git 标签或者版本文件）
+          $currentVersion = "v1.0.0"  # 这里可以改为从某个文件读取版本号或者使用 Git 标签
+          $versionParts = $currentVersion.Substring(1).Split('.')
+          $patch = [int]$versionParts[2] + 1
+          $newVersion = "v$($versionParts[0]).$($versionParts[1]).$patch"
+          echo "New version: $newVersion"
+          echo "NEW_VERSION=$newVersion" | Out-File -FilePath $env:GITHUB_ENV -Encoding utf8 -Append
+
+      - name: Build Android ARM64
         shell: pwsh
         run: |
-          & "${env:MSBUILD_PATH}" HackerKit.Android/HackerKit.Android.csproj /t:SignAndroidPackage /p:Configuration=Release
+          & "${env:MSBUILD_PATH}" HackerKit.Android/HackerKit.Android.csproj /t:SignAndroidPackage /p:Configuration=Release /p:Platform=arm64 /p:Version=$env:NEW_VERSION
 
-      - name: Upload APK
+      - name: Build Android AMD64
+        shell: pwsh
+        run: |
+          & "${env:MSBUILD_PATH}" HackerKit.Android/HackerKit.Android.csproj /t:SignAndroidPackage /p:Configuration=Release /p:Platform=amd64 /p:Version=$env:NEW_VERSION
+
+      - name: Build Android ARM32
+        shell: pwsh
+        run: |
+          & "${env:MSBUILD_PATH}" HackerKit.Android/HackerKit.Android.csproj /t:SignAndroidPackage /p:Configuration=Release /p:Platform=arm32 /p:Version=$env:NEW_VERSION
+
+      - name: Build Android AMD32
+        shell: pwsh
+        run: |
+          & "${env:MSBUILD_PATH}" HackerKit.Android/HackerKit.Android.csproj /t:SignAndroidPackage /p:Configuration=Release /p:Platform=amd32 /p:Version=$env:NEW_VERSION
+
+      - name: Upload ARM64 APK
         uses: actions/upload-artifact@v4
         with:
-          name: HackerKit.apk
-          path: HackerKit.Android/bin/Release/*.apk
+          name: HackerKit-arm64.apk
+          path: HackerKit.Android/bin/Release/arm64/*.apk
 
-      - name: Create GitHub Release
-        if: startsWith(github.ref, 'refs/tags/')
-        uses: softprops/action-gh-release@v1
+      - name: Upload AMD64 APK
+        uses: actions/upload-artifact@v4
         with:
-          files: HackerKit.Android/bin/Release/*.apk
+          name: HackerKit-amd64.apk
+          path: HackerKit.Android/bin/Release/amd64/*.apk
+
+      - name: Upload ARM32 APK
+        uses: actions/upload-artifact@v4
+        with:
+          name: HackerKit-arm32.apk
+          path: HackerKit.Android/bin/Release/arm32/*.apk
+
+      - name: Upload AMD32 APK
+        uses: actions/upload-artifact@v4
+        with:
+          name: HackerKit-amd32.apk
+          path: HackerKit.Android/bin/Release/amd32/*.apk
