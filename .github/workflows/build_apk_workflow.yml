@@ -32,7 +32,7 @@ jobs:
 
       # 恢复 NuGet 包
       - name: Restore NuGet packages
-        run: nuget restore HackerKit.sln
+        run: dotnet restore HackerKit.sln
 
       # 查找 MSBuild 路径
       - name: Find MSBuild Path
