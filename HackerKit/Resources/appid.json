@@ -1,0 +1,403 @@
+{
+    "163": {
+        "appid": 100495085,
+        "name": "网易云音乐",
+        "icon": "https://i.gtimg.cn/open/app_icon/00/49/50/85/100495085_100_m.png",
+        "package_name": "com.netease.cloudmusic",
+        "sign": "da6b069da1e2982db3e386233f68d76d",
+        "getMusicInfo": "get163Song"
+    },
+    "10010": {
+        "appid": 100884650,
+        "name": "10010",
+        "package_name": "com.sinovatech.unicom.ui",
+        "sign": "dacd0a6815659df3565408cdfd80deea"
+    },
+    "10086": {
+        "appid": 100805335,
+        "name": "10086",
+        "package_name": "com.greenpoint.android.mc10086.activity",
+        "sign": "e0bcb95cdaf4777715e4fa5989a4446c"
+    },
+    "qq": {
+        "appid": 100497308,
+        "name": "QQ音乐",
+        "icon": "https://p.qpic.cn/qqconnect/0/app_100497308_1626060999/100?max-age=2592000&t=0",
+        "package_name": "com.tencent.qqmusic",
+        "sign": "cbd27cd7c861227d013a25b2d10f0799",
+        "getMusicInfo": "getQQSong"
+    },
+    "migu": {
+        "appid": 1101053067,
+        "name": "咪咕音乐",
+        "package_name": "cmccwm.mobilemusic",
+        "sign": "6cdc72a439cef99a3418d2a78aa28c73",
+        "getMusicInfo": "getMiGuSong"
+    },
+    "kugou": {
+        "appid": 205141,
+        "name": "酷狗音乐",
+        "icon": "https://open.gtimg.cn/open/app_icon/00/20/51/41/205141_100_m.png?t=0",
+        "package_name": "com.kugou.android",
+        "sign": "fe4a24d80fcf253a00676a808f62c2c6",
+        "getMusicInfo": "getKuGouSong"
+    },
+    "kuwo": {
+        "appid": 100243533,
+        "name": "酷我音乐",
+        "icon": "https://p.qpic.cn/qqconnect/0/app_100243533_1636374695/100?max-age=2592000&t=0",
+        "package_name": "cn.kuwo.player",
+        "sign": "bf9ff4ffb4c558a34ee3fd52c223ebf5",
+        "getMusicInfo": "getKuwoSong"
+    },
+    "kugoulite": {
+        "appid": 101706348,
+        "name": "酷狗概念版",
+        "icon": "https://p.qpic.cn/qqconnect/0/app_101706348_1603432225/100?max-age=2592000&t=0",
+        "package_name": "com.kugou.android.lite",
+        "sign": "fe4a24d80fcf253a00676a808f62c2c6",
+        "getMusicInfo": "getKuGouLite"
+    },
+    "bodian": {
+        "appid": 101904722,
+        "name": "波点音乐",
+        "icon": "https://p.qpic.cn/qqconnect/0/app_101706348_1603432225/100?max-age=2592000&t=0",
+        "package_name": "cn.wenyu.bodian",
+        "sign": "5380ca99d2bea3173b0b6e52cff44b45",
+        "getMusicInfo": "getBoDian"
+    },
+    "baidu": {
+        "appid": 100784518,
+        "name": "百度",
+        "icon": "https://p.qpic.cn/qqconnect/0/app_101706348_1603432225/100?max-age=2592000&t=0",
+        "package_name": "com.baidu.searchbox",
+        "sign": "c2b0b497d0389e6de1505e7fd8f4d539",
+        "getMusicInfo": "getBaiDu"
+    },
+    "miui": {
+        "appid": 101944154,
+        "name": "MIUI音乐",
+        "icon": "https://p.qpic.cn/qqconnect/0/app_101706348_1603432225/100?max-age=2592000&t=0",
+        "package_name": "com.miui.player",
+        "sign": "701478a1e3b4b7e3978ea69469410f13",
+        "getMusicInfo": "getMIUIMusic"
+    },
+    "kuan": {
+        "appid": 100336226,
+        "name": "酷安",
+        "icon": "https://p.qpic.cn/qqconnect/0/app_101706348_1603432225/100?max-age=2592000&t=0",
+        "package_name": "com.coolapk.market",
+        "sign": "03722d493a5a6f991b9bb8a8f2006a17",
+        "getMusicInfo": "getKuAn"
+    },
+    "qidian": {
+        "appid": 100736949,
+        "name": "起点",
+        "icon": "https://p.qpic.cn/qqconnect/0/app_101706348_1603432225/100?max-age=2592000&t=0",
+        "package_name": "com.qidian.QDReader",
+        "sign": "adf3951748a3ecbc6ff8f5b62a4337da",
+        "getMusicInfo": "getQiDian"
+    },
+    "skland": {
+        "appid": 102048216,
+        "name": "森空岛",
+        "icon": "https://p.qpic.cn/qqconnect/0/app_101706348_1603432225/100?max-age=2592000&t=0",
+        "package_name": "com.hypergryph.skland",
+        "sign": "20f46148b72d8e5e5ca23d37a4f41490",
+        "getMusicInfo": "getSKLand"
+    },
+    "bilibili": {
+        "appid": 100951776,
+        "name": "哔哩哔哩",
+        "icon": "https://p.qpic.cn/qqconnect/0/app_101706348_1603432225/100?max-age=2592000&t=0",
+        "package_name": "tv.danmaku.bili",
+        "sign": "7194d531cbe7960a22007b9f6bdaa38b",
+        "getMusicInfo": "getBiLi"
+    },
+    "wechat": {
+        "appid": 1103188687,
+        "name": "微信",
+        "icon": "https://p.qpic.cn/qqconnect/0/app_101706348_1603432225/100?max-age=2592000&t=0",
+        "package_name": "com.tencent.mm",
+        "sign": "18c867f0717aa67b2ab7347505ba07ed",
+        "getMusicInfo": "getWeChat"
+    },
+    "mihoyo": {
+        "appid": 1109288517,
+        "name": "米游社",
+        "icon": "https://p.qpic.cn/qqconnect/0/app_101706348_1603432225/100?max-age=2592000&t=0",
+        "package_name": "com.mihoyo.hyperion",
+        "sign": "abdcfbc2380da2413c1e0be7a118dd9e",
+        "getMusicInfo": "getMiHoYo"
+    },
+    "mingchao": {
+        "appid": 102067507,
+        "name": "鸣潮",
+        "package_name": "com.kurogame.mingchao",
+        "sign": "66D042597CC267451F041C48B6B32D2F"
+    },
+    "5sing": {
+        "appid": 200079,
+        "name": "5sing",
+        "package_name": "com.sing.client",
+        "sign": "3fa2b7951bbf704a052bd2364f3e3ee1"
+    },
+    "changba": {
+        "appid": 100261904,
+        "name": "唱吧",
+        "package_name": "com.changba",
+        "sign": "ccc7ec28c0ce4fcf12bf082476bc9ec4"
+    },
+    "qianqian": {
+        "appid": 100907010,
+        "name": "千千音乐",
+        "package_name": "com.ting.mp3.android",
+        "sign": "0586742e88a2e6a19e996598ec336b61"
+    },
+    "wangzhe": {
+        "appid": 1104466820,
+        "name": "王者",
+        "package_name": "com.tencent.tmgp.sgame",
+        "sign": "e9b518b0fa85c7b7d5c2c5bfba79217d"
+    },
+    "yuanshen": {
+        "appid": 1110976923,
+        "name": "原神",
+        "package_name": "com.miHoYo.Yuanshen",
+        "sign": "5583e6a15a9cfbe6af9c945c5b8b1a4b"
+    },
+    "starrail": {
+        "appid": 102002255,
+        "name": "星穹铁道",
+        "package_name": "com.miHoYo.hkrpg",
+        "sign": "0f608ad037b154867d55c0a85c9421cc"
+    },
+    "sougou": {
+        "appid": 100294784,
+        "name": "搜狗",
+        "package_name": "com.sohu.inputmethod.sogou",
+        "sign": "15cd0088e2697091f33a2d97da2ea956"
+    },
+    "pinduoduo": {
+        "appid": 1104790111,
+        "name": "拼多多",
+        "package_name": "com.xunmeng.pinduoduo",
+        "sign": "6e26e5a980e0ba33fe2e4ef23607dc54"
+    },
+    "jd": {
+        "appid": 100273020,
+        "name": "京东",
+        "package_name": "com.jingdong.app.mall",
+        "sign": "e0d1a70367c58d5d41c4678dfd05f84f"
+    },
+    "qianniu": {
+        "appid": 100892246,
+        "name": "千牛",
+        "package_name": "com.taobao.qianniu",
+        "sign": "4d95b74d654281d9136211c7051a9ea9"
+    },
+    "alibaba": {
+        "appid": 1105584242,
+        "name": "阿里巴巴",
+        "package_name": "com.alibaba.wireless",
+        "sign": "1900ead04f5464ed29d84ed813eaef55"
+    },
+    "qimao": {
+        "appid": 1106969405,
+        "name": "七猫小说",
+        "package_name": "com.kmxs.reader",
+        "sign": "c45a9e4b154696cc4ee39bb6d060b8c2"
+    },
+    "alipay": {
+        "appid": 100737604,
+        "name": "支付宝",
+        "package_name": "com.eg.android.AlipayGphone",
+        "sign": "406d5150e64381124a7e8569f9784ed0"
+    },
+    "chinapost": {
+        "appid": 101826630,
+        "name": "中国邮政",
+        "package_name": "com.wisentsoft.chinapost.android",
+        "sign": "c5fae8473f5744d6da98599d3a9e93f4"
+    },
+    "gaode": {
+        "appid": 100571486,
+        "name": "高德地图",
+        "package_name": "com.autonavi.minimap",
+        "sign": "3f9eaea4f2d4285c2ddbbda739136479"
+    },
+    "meituan": {
+        "appid": 214506,
+        "name": "美团",
+        "package_name": "com.sankuai.meituan",
+        "sign": "638c81261479c2104ede3f2518e91725"
+    },
+    "ele": {
+        "appid": 100947887,
+        "name": "饿了么",
+        "package_name": "me.ele",
+        "sign": "3a407fd39704d8e4b21af0ef69c3f43f"
+    },
+    "zhihu": {
+        "appid": 101118708,
+        "name": "知乎",
+        "package_name": "com.zhihu.android",
+        "sign": "5c4f618536eaf9ae0e2628c5af1693bc"
+    },
+    "tieba": {
+        "appid": 100312028,
+        "name": "百度贴吧",
+        "package_name": "com.baidu.tieba",
+        "sign": "673004cf2f6efdec2385c8116c1e8c14"
+    },
+    "weibo": {
+        "appid": 100736903,
+        "name": "微博",
+        "package_name": "com.sina.weibo",
+        "sign": "18da2bf10352443a00a5e046d9fca6bd"
+    },
+    "zuiyou": {
+        "appid": 1103537147,
+        "name": "最右",
+        "package_name": "cn.xiaochuankeji.tieba",
+        "sign": "2e4f5e0b717b87005af9030cbd4ecada"
+    },
+    "douyin": {
+        "appid": 1105602870,
+        "name": "抖音",
+        "package_name": "com.ss.android.ugc.aweme",
+        "sign": "aea615ab910015038f73c47e45d21466"
+    },
+    "kuaishou": {
+        "appid": 100228415,
+        "name": "快手",
+        "package_name": "com.smile.gifmaker",
+        "sign": "0f938c4f0995a83c9bf31f0c64322589"
+    },
+    "xhs": {
+        "appid": 100507190,
+        "name": "小红书",
+        "package_name": "com.xingin.xhs",
+        "sign": "6cfca61d9d1eca56844806706ba18cf7"
+    },
+    "tim": {
+        "appid": 1105296740,
+        "name": "tim",
+        "package_name": "com.tencent.tim",
+        "sign": "775e696d09856872fdd8ab4f3f06b1e0"
+    },
+    "appbaby": {
+        "appid": 1101070898,
+        "name": "应用宝",
+        "package_name": "com.tencent.android.qqdownloader",
+        "sign": "a095641b30785f28642708f481603e0b"
+    },
+    "qqbrowser": {
+        "appid": 100446242,
+        "name": "QQ浏览器",
+        "package_name": "com.tencent.mtt",
+        "sign": "d8391a394d4a179e6fe7bdb8a301258b"
+    },
+    "weixin": {
+        "appid": 1103188687,
+        "name": "微信",
+        "package_name": "com.tencent.mm",
+        "sign": "18c867f0717aa67b2ab7347505ba07ed"
+    },
+    "tencent": {
+        "appid": 100686848,
+        "name": "腾讯QQ",
+        "package_name": "com.tencent.mobileqq",
+        "sign": "a6b745bf24a2c277527716f6f36eb68d"
+    },
+    "singduck": {
+        "appid": 101531693,
+        "name": "唱鸭",
+        "package_name": "com.rockets.chang",
+        "sign": "647b3d1c5e960c4150eee2ce22885768"
+    },
+    "zzz": {
+        "appid": 102086827,
+        "name": "绝区零",
+        "package_name": "com.miHoYo.Nap",
+        "sign": "2b490effb62fc6e92332ebe3877f8935"
+    },
+    "arknights": {
+        "appid": 1108300877,
+        "name": "明日方舟",
+        "package_name": "com.hypergryph.arknights",
+        "sign": "62ae221e4c5d4cad4b851d7380f4ed2c"
+    },
+    "peoplepeoplepeoplepeoplepeople": {
+        "appid": 1108199480,
+        "name": "第五人格",
+        "package_name": "com.netease.dwrg",
+        "sign": "08e1a6f478f1ac2098edf5125de5655b"
+    },
+    "girlsfrontline": {
+        "appid": 2131624155,
+        "name": "少女前线",
+        "package_name": "com.sunborn.girlsfrontline.cn",
+        "sign": "fdd4834f3dd3194227384b88c74448ab"
+    },
+    "jinjiang": {
+        "appid": 1101956959,
+        "name": "晋江文学城",
+        "package_name": "com.jjwxc.reader",
+        "sign": "629D5240C8F3E175E897C7844A8737F2"
+    },
+    "oppostore": {
+        "appid": 1108217754,
+        "name": "OPPO商城",
+        "package_name": "com.oppo.store",
+        "sign": "7815C5174154B7CE33F023602106ECC6"
+    },
+    "pubgmhd": {
+        "appid": 1106467070,
+        "name": "和平精英",
+        "package_name": "com.tencent.tmgp.pubgmhd",
+        "sign": "38B26479E4B500E8161598315C4AD35C"
+    },
+    "gov": {
+        "appid": 1105066195,
+        "name": "国务院",
+        "package_name": "com.gov.cn",
+        "sign": "EC18B4135488732564581A0C2DACC1DE"
+    },
+    "dfm": {
+        "appid": 1110543085,
+        "name": "三角洲行动",
+        "package_name": "com.tencent.tmgp.dfm",
+        "sign": "2b0a9ebd4896db62bef3f79d7496c19f"
+    },
+    "hunyuan": {
+        "appid": 102115491,
+        "name": "腾讯元宝",
+        "package_name": "com.tencent.hunyuan.app.chat",
+        "sign": "088a2bd0cbccac84927c722cf374ecba"
+    },
+    "huoying": {
+        "appid": 1104307008,
+        "name": "火影忍者",
+        "package_name": "com.tencent.KiHan",
+        "sign": "68ce8a967463a2c34b38adc48d0d373d"
+    },
+    "doubao": {
+        "appid": 1112323716,
+        "name": "豆包",
+        "package_name": "com.larus.nova",
+        "sign": "f32d2daae92240ffeb6660f5f3325009"
+    },
+    "mrzh": {
+        "appid": 1104748094,
+        "name": "明日之后",
+        "package_name": "com.netease.mrzh",
+        "sign": "d30e73775a4458557c5af97d0946db98"
+    },
+    "baidumap": {
+        "appid": 101458979,
+        "name": "百度地图",
+        "package_name": "com.baidu.BaiduMap",
+        "sign": "c2b0b497d0389e6de1505e7fd8f4d539"
+    }
+}
