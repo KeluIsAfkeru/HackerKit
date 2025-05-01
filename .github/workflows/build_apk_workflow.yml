@@ -78,6 +78,39 @@ jobs:
         run: |
           & "${env:MSBUILD_PATH}" HackerKit.Android/HackerKit.Android.csproj /t:SignAndroidPackage /p:Configuration=Release /p:Platform=amd32 /p:Version=$env:NEW_VERSION
 
+      # 构建 Android AnyCPU
+      - name: Build Android AnyCPU
+        shell: pwsh
+        run: |
+          & "${env:MSBUILD_PATH}" HackerKit.Android/HackerKit.Android.csproj /t:SignAndroidPackage /p:Configuration=Release /p:Platform=AnyCPU /p:Version=$env:NEW_VERSION
+
+      # 构建 Debug 包
+      - name: Build Debug Package
+        shell: pwsh
+        run: |
+          & "${env:MSBUILD_PATH}" HackerKit.Android/HackerKit.Android.csproj /t:SignAndroidPackage /p:Configuration=Debug /p:Platform=AnyCPU /p:Version=$env:NEW_VERSION
+
+      # 上传 Debug APK
+      - name: Upload Debug APK
+        uses: actions/upload-artifact@v4
+        with:
+          name: HackerKit-Debug.apk
+          path: HackerKit.Android/bin/Debug/AnyCPU/*.apk
+
+      # 创建 Git 标签
+      - name: Create Git Tag
+        if: success()
+        uses: actions/github-script@v6
+        with:
+          script: |
+            const version = process.env.NEW_VERSION
+            await github.rest.git.createRef({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              ref: `refs/tags/v${version}`,
+              sha: context.sha
+            })
+
       # 上传 ARM64 APK
       - name: Upload ARM64 APK
         uses: actions/upload-artifact@v4
@@ -106,6 +139,13 @@ jobs:
           name: HackerKit-amd32.apk
           path: HackerKit.Android/bin/Release/amd32/*.apk
 
+      # 上传 AnyCPU APK
+      - name: Upload AnyCPU APK
+        uses: actions/upload-artifact@v4
+        with:
+          name: HackerKit-AnyCPU.apk
+          path: HackerKit.Android/bin/Release/AnyCPU/*.apk
+
       # 创建 GitHub Release 并上传所有 APK
       - name: Create GitHub Release
         if: startsWith(github.ref, 'refs/tags/')
@@ -116,3 +156,5 @@ jobs:
             HackerKit.Android/bin/Release/amd64/*.apk
             HackerKit.Android/bin/Release/arm32/*.apk
             HackerKit.Android/bin/Release/amd32/*.apk
+            HackerKit.Android/bin/Release/AnyCPU/*.apk
+            HackerKit.Android/bin/Debug/AnyCPU/*.apk
