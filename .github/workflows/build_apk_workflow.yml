@@ -47,22 +47,25 @@ jobs:
         id: version
         shell: pwsh
         run: |
-          # 获取最新Release标签（格式要求：vX.Y.Z）
+          # 获取最新Release标签，忽略git命令的退出码
           $latestTag = git describe --tags --abbrev=0 --match "v*" 2>$null
-          if (-not $latestTag) {
+          $gitExitCode = $LASTEXITCODE
+
+          # 根据git命令退出码判断是否存在标签
+          if ($gitExitCode -ne 0) {
             Write-Warning "No existing release tag found. Starting from v0.0.0"
             $currentVersion = "0.0.0"
           } else {
-            # 剥离标签前缀（例如将 "v1.2.3" 转换为 "1.2.3"）
             $currentVersion = $latestTag.TrimStart('v')
           }
 
-          # 版本号格式校验
+          # 版本格式校验（确保即使默认值也符合规范）
           if ($currentVersion -notmatch '^\d+\.\d+\.\d+$') {
-            throw "Invalid version format: $currentVersion"
+            Write-Error "Invalid version format: $currentVersion"
+            exit 1
           }
 
-          # 拆分并递增修订号
+          # 拆分并递增版本号
           $parts = $currentVersion.Split('.')
           $major = [int]$parts[0]
           $minor = [int]$parts[1]
@@ -72,6 +75,8 @@ jobs:
           # 输出并注入环境变量
           echo "Previous version: $currentVersion → New version: $newVersion"
           echo "NEW_VERSION=$newVersion" | Out-File -FilePath $env:GITHUB_ENV -Encoding utf8 -Append
+          exit 0  # 显式返回成功状态
+
 
       # 构建 Android ARM64
       - name: Build Android ARM64
