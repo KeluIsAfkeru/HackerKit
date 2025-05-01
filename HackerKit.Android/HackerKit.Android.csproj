@@ -24,6 +24,8 @@
     <NuGetPackageImportStamp>
     </NuGetPackageImportStamp>
   </PropertyGroup>
+
+  <!-- Debug and Release Configuration -->
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
     <DebugType>portable</DebugType>
@@ -34,6 +36,8 @@
     <WarningLevel>4</WarningLevel>
     <AndroidLinkMode>None</AndroidLinkMode>
   </PropertyGroup>
+
+  <!-- Release Configuration with ARM64 and others -->
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
     <DebugType>portable</DebugType>
@@ -47,9 +51,24 @@
     <EnableLLVM>false</EnableLLVM>
     <AndroidEnableProfiledAot>false</AndroidEnableProfiledAot>
     <BundleAssemblies>false</BundleAssemblies>
-    <AndroidSupportedAbis>
-    </AndroidSupportedAbis>
+    <AndroidSupportedAbis>armeabi-v7a;x86_64;arm64</AndroidSupportedAbis> <!-- Support ARM, x86 -->
   </PropertyGroup>
+
+  <!-- Custom Configuration for ARM64 Release -->
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|arm64' ">
+    <OutputPath>bin\Release\arm64</OutputPath> <!-- Custom output path for ARM64 -->
+  </PropertyGroup>
+
+  <!-- Custom Configuration for ARM32 Release -->
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|arm32' ">
+    <OutputPath>bin\Release\arm32</OutputPath> <!-- Custom output path for ARM32 -->
+  </PropertyGroup>
+
+  <!-- Custom Configuration for x86 Release -->
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x86' ">
+    <OutputPath>bin\Release\x86</OutputPath> <!-- Custom output path for x86 -->
+  </PropertyGroup>
+
   <ItemGroup>
     <Reference Include="Mono.Android" />
     <Reference Include="System" />
@@ -59,6 +78,7 @@
     <Reference Include="System.Numerics" />
     <Reference Include="System.Numerics.Vectors" />
   </ItemGroup>
+  
   <ItemGroup>
     <PackageReference Include="Google.Protobuf">
       <Version>3.30.2</Version>
@@ -81,17 +101,20 @@
     <PackageReference Include="Xamarin.Forms" Version="5.0.0.2662" />
     <PackageReference Include="Xamarin.Essentials" Version="1.8.1" />
   </ItemGroup>
+
   <ItemGroup>
     <Compile Include="Assets\ScrollableEditorRenderer.cs" />
     <Compile Include="MainActivity.cs" />
     <Compile Include="Resources\Resource.designer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
+
   <ItemGroup>
     <None Include="Resources\AboutResources.txt" />
     <None Include="Assets\AboutAssets.txt" />
     <None Include="Properties\AndroidManifest.xml" />
   </ItemGroup>
+
   <ItemGroup>
     <AndroidResource Include="Resources\values\styles.xml" />
     <AndroidResource Include="Resources\values\colors.xml" />
@@ -108,14 +131,17 @@
     <AndroidResource Include="Resources\mipmap-xxxhdpi\icon.png" />
     <AndroidResource Include="Resources\mipmap-xxxhdpi\launcher_foreground.png" />
   </ItemGroup>
+
   <ItemGroup>
     <Folder Include="Resources\drawable\" />
   </ItemGroup>
+
   <ItemGroup>
     <ProjectReference Include="..\HackerKit\HackerKit.csproj">
       <Project>{24C0A1F4-2344-4F8A-9C70-874A8AEF2B75}</Project>
       <Name>HackerKit</Name>
     </ProjectReference>
   </ItemGroup>
+
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.CSharp.targets" />
 </Project>
