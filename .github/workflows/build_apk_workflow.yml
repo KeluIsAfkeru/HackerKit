@@ -11,128 +11,142 @@ jobs:
     runs-on: windows-latest
     permissions:
       contents: write
-      pull-requests: write
 
     steps:
       - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
 
-      # 设置 Java 11 环境
       - name: Setup Java 11
         uses: actions/setup-java@v3
         with:
           java-version: "11"
-          distribution: "microsoft"
+          distribution: "zulu"
 
-      # 缓存 NuGet 包以加速构建
       - name: Cache NuGet packages
         uses: actions/cache@v3
         with:
           path: |
             ~/.nuget/packages
+            $(UserProfile)/.nuget/packages
           key: ${{ runner.os }}-nuget-${{ hashFiles('**/*.csproj') }}
           restore-keys: |
             ${{ runner.os }}-nuget-
 
-      # 恢复 NuGet 包
-      - name: Restore NuGet packages
+      - name: Restore dependencies
         run: nuget restore HackerKit.sln
 
-      # 查找 MSBuild 路径
       - name: Find MSBuild Path
         id: msbuild
         shell: pwsh
         run: |
-          $msbuildPath = vswhere -latest -products * -requires Microsoft.Component.MSBuild -find MSBuild\**\Bin\MSBuild.exe
+          # 获取最新的MSBuild路径并验证
+          $msbuildPath = vswhere -latest -products * -requires Microsoft.Component.MSBuild -find MSBuild\**\Bin\MSBuild.exe | Select-Object -First 1
+          if (-not (Test-Path $msbuildPath)) {
+              Write-Error "❌ MSBuild not found at $msbuildPath"
+              exit 1
+          }
           echo "MSBUILD_PATH=$msbuildPath" | Out-File -FilePath $env:GITHUB_ENV -Encoding utf8 -Append
-          echo "Found msbuild: $msbuildPath"
+          echo "✅ Found MSBuild at: $msbuildPath"
 
-      # 获取并递增版本号
-      - name: Get and Increment Version from Release
+      - name: Calculate Version
         id: version
         shell: pwsh
         run: |
+          # 改进的版本号计算逻辑
           $latestTag = git describe --tags --abbrev=0 --match "v*" 2>$null
-          $gitExitCode = $LASTEXITCODE
-
-          if ($gitExitCode -ne 0) {
-            Write-Warning "No existing release tag found. Starting from v0.0.0"
-            $currentVersion = "0.0.0"
+          $currentCommit = git rev-parse HEAD
+          
+          if (-not $latestTag) {
+              Write-Host "ℹ️ No existing tag found. Starting from v0.0.0"
+              $newVersion = "0.0.1"
           } else {
-            $currentVersion = $latestTag.TrimStart('v')
+              $currentVersion = $latestTag.TrimStart('v')
+              if ($currentVersion -notmatch '^(\d+)\.(\d+)\.(\d+)$') {
+                  Write-Error "❌ Invalid version format: $currentVersion"
+                  exit 1
+              }
+              $major = [int]$matches[1]
+              $minor = [int]$matches[2]
+              $patch = [int]$matches[3] + 1
+              $newVersion = "$major.$minor.$patch"
           }
 
-          if ($currentVersion -notmatch '^\d+\.\d+\.\d+$') {
-            Write-Error "Invalid version format: $currentVersion"
-            exit 1
-          }
-
-          $parts = $currentVersion.Split('.')
-          $major = [int]$parts[0]
-          $minor = [int]$parts[1]
-          $patch = [int]$parts[2] + 1
-          $newVersion = "$major.$minor.$patch"
-
-          echo "Previous version: $currentVersion → New version: $newVersion"
           echo "NEW_VERSION=$newVersion" | Out-File -FilePath $env:GITHUB_ENV -Encoding utf8 -Append
-          exit 0
+          echo "✅ Version calculated: $newVersion"
 
-      # 构建各个平台 APK
-      - name: Build Android ARM64
+      - name: Build APKs
         shell: pwsh
+        timeout-minutes: 30
+        strategy:
+          matrix:
+            platform: [arm64, amd64, arm32, amd32]
         run: |
-          & "${env:MSBUILD_PATH}" HackerKit.Android/HackerKit.Android.csproj /t:SignAndroidPackage /p:Configuration=Release /p:Platform=arm64 /p:Version=$env:NEW_VERSION
-
-      - name: Build Android AMD64
-        shell: pwsh
-        run: |
-          & "${env:MSBUILD_PATH}" HackerKit.Android/HackerKit.Android.csproj /t:SignAndroidPackage /p:Configuration=Release /p:Platform=amd64 /p:Version=$env:NEW_VERSION
-
-      - name: Build Android ARM32
-        shell: pwsh
-        run: |
-          & "${env:MSBUILD_PATH}" HackerKit.Android/HackerKit.Android.csproj /t:SignAndroidPackage /p:Configuration=Release /p:Platform=arm32 /p:Version=$env:NEW_VERSION
-
-      - name: Build Android AMD32
-        shell: pwsh
-        run: |
-          & "${env:MSBUILD_PATH}" HackerKit.Android/HackerKit.Android.csproj /t:SignAndroidPackage /p:Configuration=Release /p:Platform=amd32 /p:Version=$env:NEW_VERSION
-
-      # 检查标签是否存在并创建标签
-      - name: Check if Git tag exists and create tag
-        id: check_tag
-        run: |
-          const version = process.env.NEW_VERSION
-          try {
-            // 检查标签是否已存在
-            const tagExists = await github.rest.git.getRef({
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              ref: `refs/tags/v${version}`
-            })
-            console.log(`Tag v${version} already exists!`)
-          } catch (error) {
-            if (error.status === 404) {
-              console.log(`Tag v${version} does not exist. Creating tag...`)
-              // 创建标签
-              await github.rest.git.createRef({
-                owner: context.repo.owner,
-                repo: context.repo.repo,
-                ref: `refs/tags/v${version}`,
-                sha: context.sha
-              })
-              console.log(`Tag v${version} created successfully!`)
-            } else {
-              throw error
-            }
+          $projectPath = "HackerKit.Android/HackerKit.Android.csproj"
+          $outputDir = "HackerKit.Android/bin/Release/${{ matrix.platform }}"
+          
+          # 清理旧构建结果
+          if (Test-Path $outputDir) {
+              Remove-Item $outputDir -Recurse -Force
           }
 
-      # 创建 GitHub Release 并上传所有 APK
-      - name: Create GitHub Release and Upload APKs
-        if: startsWith(github.ref, 'refs/tags/')
+          & "$env:MSBUILD_PATH" $projectPath `
+            /t:SignAndroidPackage `
+            /p:Configuration=Release `
+            /p:Platform="${{ matrix.platform }}" `
+            /p:Version=$env:NEW_VERSION `
+            /p:OutputPath=$outputDir
+
+          # 验证APK生成
+          if (-not (Test-Path "$outputDir/*.apk")) {
+              Write-Error "❌ APK generation failed for ${{ matrix.platform }}"
+              exit 1
+          }
+
+      - name: Collect Build Artifacts
+        shell: pwsh
+        run: |
+          # 创建统一输出目录
+          $artifactDir = "artifacts/${{ env.NEW_VERSION }}"
+          New-Item -ItemType Directory -Path $artifactDir -Force
+          Copy-Item HackerKit.Android/bin/Release/*/*.apk -Destination $artifactDir
+          echo "ARTIFACT_DIR=$artifactDir" >> $env:GITHUB_ENV
+
+      - name: Generate Release Notes
+        id: release_notes
+        shell: pwsh
+        run: |
+          $latestTag = git describe --tags --abbrev=0 --match "v*" 2>$null
+          $currentCommit = git rev-parse HEAD
+          
+          if (-not $latestTag) {
+              $commitHistory = git log --pretty=format:"• %h - %s (%an)"
+          } else {
+              $commitHistory = git log "${latestTag}..$currentCommit" --pretty=format:"• %h - %s (%an)"
+          }
+          
+          $releaseNotes = @"
+          ## 🚀 What's New in v${{ env.NEW_VERSION }}
+          
+          ### 📜 Commit History
+          $commitHistory
+          
+          ### 📦 Included Builds
+          - arm64
+          - arm32
+          - amd64
+          - amd32
+          "@
+          
+          echo $releaseNotes
+          echo "RELEASE_NOTES=$releaseNotes" >> $env:GITHUB_ENV
+
+      - name: Create GitHub Release
         uses: softprops/action-gh-release@v1
         with:
-          files: |
-            HackerKit.Android/bin/Release/arm64/*.apk
-            HackerKit.Android/bin/Release/amd64/*.apk
-            HackerKit.Android/bin/Release/arm32/*.apk
-            HackerKit.Android/bin/Release/amd32/*.apk
+          tag_name: v${{ env.NEW_VERSION }}
+          name: "HackerKit v${{ env.NEW_VERSION }}"
+          body: ${{ env.RELEASE_NOTES }}
+          files: ${{ env.ARTIFACT_DIR }}/*.apk
+          draft: false
+          prerelease: false
