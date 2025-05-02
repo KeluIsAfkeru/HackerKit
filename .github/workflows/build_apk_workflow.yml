@@ -5,7 +5,7 @@ on:
     branches:
       - main
     tags:
-      - 'v*'
+      - "v*"
 
 jobs:
   build:
@@ -52,28 +52,54 @@ jobs:
         id: version
         shell: pwsh
         run: |
+          # 处理标签触发情况
           if ($env:GITHUB_REF -like 'refs/tags/v*') {
               $tagVersion = $env:GITHUB_REF -replace 'refs/tags/v', ''
-              Write-Output "Using tag version: $tagVersion"
+              Write-Output "##[group]Tag Detected: $tagVersion"
               echo "NEW_VERSION=$tagVersion" >> $env:GITHUB_ENV
-          } else {
+              Write-Output "##[endgroup]"
+          }
+          # 处理分支触发情况
+          else {
+              Write-Output "##[group]Branch Build Version Handling"
+
+              # 静默执行并忽略git错误状态
               $latestTag = git describe --tags --abbrev=0 2>$null
+              $global:LASTEXITCODE = 0  # 重置错误状态码
+
+              # 空仓库处理逻辑
               if (-not $latestTag) {
-                  Write-Output "No existing tags found, using initial version"
+                  Write-Output "Initializing new version sequence"
                   $latestTag = "v0.0.0"
+                  echo "INITIAL_VERSION=true" >> $env:GITHUB_ENV
               }
-              if ($latestTag -match 'v?(\d+)\.(\d+)\.(\d+)') {
+
+              # 版本解析
+              $versionPattern = '^v?(\d+)\.(\d+)\.(\d+)(-.+)?$'
+              if ($latestTag -match $versionPattern) {
                   $major = [int]$matches[1]
                   $minor = [int]$matches[2]
                   $patch = [int]$matches[3] + 1
                   $newVersion = "$major.$minor.$patch"
-              } else {
-                  Write-Output "Invalid tag format, using default version"
+                  $prerelease = $matches[4]
+
+                  Write-Output "Base version: $major.$minor.$patch"
+                  if ($prerelease) {
+                      Write-Output "Preserving prerelease suffix: $prerelease"
+                      $newVersion += $prerelease
+                  }
+              }
+              else {
+                  Write-Output "##[warning]Unexpected tag format: $latestTag"
                   $newVersion = "1.0.0"
               }
-              Write-Output "Incremented version: $newVersion"
+
+              # 设置环境变量
+              Write-Output "Final computed version: $newVersion"
               echo "NEW_VERSION=$newVersion" >> $env:GITHUB_ENV
+              Write-Output "##[endgroup]"
           }
+          exit 0  # 强制成功退出
 
       # 构建 Android ARM64
       - name: Build Android ARM64
