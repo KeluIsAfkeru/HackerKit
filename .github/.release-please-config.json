@@ -1,6 +1,6 @@
 {
   "$schema": "https://raw.githubusercontent.com/googleapis/release-please/main/schemas/config.json",
-  "release-type": "dotnet",
+  "release-type": "simple",
   "include-component-in-tag": false,
   "changelog-sections": [
     {
@@ -50,7 +50,8 @@
     },
     {
       "type": "deps",
-      "section": "📦 依赖更新"
+      "section": "📦 依赖更新",
+      "hidden": false
     },
     {
       "type": "build",
@@ -65,7 +66,9 @@
   ],
   "packages": {
     ".": {
-      "release-type": "dotnet"
+      "release-type": "simple",
+      "changelog-path": "CHANGELOG.md",
+      "version-file": "version.txt"
     }
   },
   "commit-search-depth": 50
