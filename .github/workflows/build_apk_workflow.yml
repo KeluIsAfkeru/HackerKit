@@ -53,25 +53,26 @@ jobs:
         shell: pwsh
         run: |
           if ($env:GITHUB_REF -like 'refs/tags/v*') {
-              # 提取标签版本（格式为vX.Y.Z）
               $tagVersion = $env:GITHUB_REF -replace 'refs/tags/v', ''
-              echo "Using tag version: $tagVersion"
-              echo "NEW_VERSION=$tagVersion" | Out-File -FilePath $env:GITHUB_ENV -Encoding utf8 -Append
+              Write-Output "Using tag version: $tagVersion"
+              echo "NEW_VERSION=$tagVersion" >> $env:GITHUB_ENV
           } else {
-              # 分支触发时获取最新标签并递增
-              $latestTag = git describe --tags --abbrev=0 || echo "v1.0.0"
-              if ($latestTag -match 'v(\d+)\.(\d+)\.(\d+)') {
+              $latestTag = git describe --tags --abbrev=0 2>$null
+              if (-not $latestTag) {
+                  Write-Output "No existing tags found, using initial version"
+                  $latestTag = "v0.0.0"
+              }
+              if ($latestTag -match 'v?(\d+)\.(\d+)\.(\d+)') {
                   $major = [int]$matches[1]
                   $minor = [int]$matches[2]
                   $patch = [int]$matches[3] + 1
+                  $newVersion = "$major.$minor.$patch"
               } else {
-                  $major = 1
-                  $minor = 0
-                  $patch = 0
+                  Write-Output "Invalid tag format, using default version"
+                  $newVersion = "1.0.0"
               }
-              $newVersion = "$major.$minor.$patch"
-              echo "Incremented version: $newVersion"
-              echo "NEW_VERSION=$newVersion" | Out-File -FilePath $env:GITHUB_ENV -Encoding utf8 -Append
+              Write-Output "Incremented version: $newVersion"
+              echo "NEW_VERSION=$newVersion" >> $env:GITHUB_ENV
           }
 
       # 构建 Android ARM64
