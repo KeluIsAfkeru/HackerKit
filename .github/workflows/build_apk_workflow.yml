@@ -1,31 +1,32 @@
 name: Build HackerKit APK
 
 on:
+  workflow_dispatch:
   push:
     branches:
       - main
-    tags:
-      - "v*"
+
+permissions:
+  contents: write
+  pull-requests: write
 
 jobs:
-  build:
-    if: contains(github.event.head_commit.message, 'build:') || startsWith(github.ref, 'refs/tags/')
+  release:
     runs-on: windows-latest
-    permissions:
-      contents: write
 
     steps:
-      - uses: actions/checkout@v4
+      - name: 🧾 检出代码
+        uses: actions/checkout@v3
 
       # 设置 Java 11 环境
-      - name: Setup Java 11
+      - name: ☕️ 设置 Java 11 环境
         uses: actions/setup-java@v3
         with:
           java-version: "11"
           distribution: "microsoft"
 
       # 缓存 NuGet 包以加速构建
-      - name: Cache NuGet packages
+      - name: 💾 缓存 NuGet 包
         uses: actions/cache@v3
         with:
           path: |
@@ -35,11 +36,11 @@ jobs:
             ${{ runner.os }}-nuget-
 
       # 恢复 NuGet 包
-      - name: Restore NuGet packages
+      - name: 🔄 恢复 NuGet 包
         run: nuget restore HackerKit.sln
 
       # 查找 MSBuild 路径
-      - name: Find MSBuild Path
+      - name: 🔍 查找 MSBuild 路径
         id: msbuild
         shell: pwsh
         run: |
@@ -47,117 +48,74 @@ jobs:
           echo "MSBUILD_PATH=$msbuildPath" | Out-File -FilePath $env:GITHUB_ENV -Encoding utf8 -Append
           echo "Found msbuild: $msbuildPath"
 
-      # 获取版本号
-      - name: Get Version Number
-        id: version
-        shell: pwsh
-        run: |
-          # 处理标签触发情况
-          if ($env:GITHUB_REF -like 'refs/tags/v*') {
-              $tagVersion = $env:GITHUB_REF -replace 'refs/tags/v', ''
-              Write-Output "##[group]Tag Detected: $tagVersion"
-              echo "NEW_VERSION=$tagVersion" >> $env:GITHUB_ENV
-              Write-Output "##[endgroup]"
-          }
-          # 处理分支触发情况
-          else {
-              Write-Output "##[group]Branch Build Version Handling"
-
-              # 静默执行并忽略git错误状态
-              $latestTag = git describe --tags --abbrev=0 2>$null
-              $global:LASTEXITCODE = 0  # 重置错误状态码
-
-              # 空仓库处理逻辑
-              if (-not $latestTag) {
-                  Write-Output "Initializing new version sequence"
-                  $latestTag = "v0.0.0"
-                  echo "INITIAL_VERSION=true" >> $env:GITHUB_ENV
-              }
-
-              # 版本解析
-              $versionPattern = '^v?(\d+)\.(\d+)\.(\d+)(-.+)?$'
-              if ($latestTag -match $versionPattern) {
-                  $major = [int]$matches[1]
-                  $minor = [int]$matches[2]
-                  $patch = [int]$matches[3] + 1
-                  $newVersion = "$major.$minor.$patch"
-                  $prerelease = $matches[4]
-
-                  Write-Output "Base version: $major.$minor.$patch"
-                  if ($prerelease) {
-                      Write-Output "Preserving prerelease suffix: $prerelease"
-                      $newVersion += $prerelease
-                  }
-              }
-              else {
-                  Write-Output "##[warning]Unexpected tag format: $latestTag"
-                  $newVersion = "1.0.0"
-              }
-
-              # 设置环境变量
-              Write-Output "Final computed version: $newVersion"
-              echo "NEW_VERSION=$newVersion" >> $env:GITHUB_ENV
-              Write-Output "##[endgroup]"
-          }
-          exit 0  # 强制成功退出
-
       # 构建 Android ARM64
-      - name: Build Android ARM64
+      - name: 🏗️ 构建 Android ARM64
         shell: pwsh
         run: |
           & "${env:MSBUILD_PATH}" HackerKit.Android/HackerKit.Android.csproj /t:SignAndroidPackage /p:Configuration=Release /p:Platform=arm64 /p:Version=$env:NEW_VERSION
 
       # 构建 Android AMD64
-      - name: Build Android AMD64
+      - name: 🏗️ 构建 Android AMD64
         shell: pwsh
         run: |
           & "${env:MSBUILD_PATH}" HackerKit.Android/HackerKit.Android.csproj /t:SignAndroidPackage /p:Configuration=Release /p:Platform=amd64 /p:Version=$env:NEW_VERSION
 
       # 构建 Android ARM32
-      - name: Build Android ARM32
+      - name: 🏗️ 构建 Android ARM32
         shell: pwsh
         run: |
           & "${env:MSBUILD_PATH}" HackerKit.Android/HackerKit.Android.csproj /t:SignAndroidPackage /p:Configuration=Release /p:Platform=arm32 /p:Version=$env:NEW_VERSION
 
       # 构建 Android AMD32
-      - name: Build Android AMD32
+      - name: 🏗️ 构建 Android AMD32
         shell: pwsh
         run: |
           & "${env:MSBUILD_PATH}" HackerKit.Android/HackerKit.Android.csproj /t:SignAndroidPackage /p:Configuration=Release /p:Platform=amd32 /p:Version=$env:NEW_VERSION
 
       # 上传 ARM64 APK
-      - name: Upload ARM64 APK
+      - name: 📤 上传 ARM64 APK
         uses: actions/upload-artifact@v4
         with:
           name: HackerKit-arm64.apk
           path: HackerKit.Android/bin/Release/arm64/*.apk
 
       # 上传 AMD64 APK
-      - name: Upload AMD64 APK
+      - name: 📤 上传 AMD64 APK
         uses: actions/upload-artifact@v4
         with:
           name: HackerKit-amd64.apk
           path: HackerKit.Android/bin/Release/amd64/*.apk
 
       # 上传 ARM32 APK
-      - name: Upload ARM32 APK
+      - name: 📤 上传 ARM32 APK
         uses: actions/upload-artifact@v4
         with:
           name: HackerKit-arm32.apk
           path: HackerKit.Android/bin/Release/arm32/*.apk
 
       # 上传 AMD32 APK
-      - name: Upload AMD32 APK
+      - name: 📤 上传 AMD32 APK
         uses: actions/upload-artifact@v4
         with:
           name: HackerKit-amd32.apk
           path: HackerKit.Android/bin/Release/amd32/*.apk
 
-      # 创建 GitHub Release 并上传所有 APK
-      - name: Create GitHub Release
+      # 🚀 运行 release-please，生成版本和 Release Notes
+      - name: 🚀 运行 release-please，生成版本和 Release Notes
+        id: release
+        uses: googleapis/release-please-action@v4
+        with:
+          config-file: .github/.release-please-config.json
+          manifest-file: .github/.release-please-manifest.json
+
+      # 创建 GitHub Release
+      - name: 🪄 创建 GitHub Release
+        if: ${{ steps.release.outputs.release_created }}
         uses: softprops/action-gh-release@v1
         with:
-          tag_name: ${{ github.ref }}
+          tag_name: ${{ steps.release.outputs.tag_name }}
+          name: ${{ steps.release.outputs.tag_name }}
+          body: ${{ steps.release.outputs.release_notes }}
           files: |
             HackerKit.Android/bin/Release/arm64/*.apk
             HackerKit.Android/bin/Release/amd64/*.apk
