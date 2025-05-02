@@ -155,7 +155,6 @@ jobs:
 
       # 创建 GitHub Release 并上传所有 APK
       - name: Create GitHub Release
-        if: startsWith(github.ref, 'refs/tags/')
         uses: softprops/action-gh-release@v1
         with:
           tag_name: ${{ github.ref }}
