@@ -19,6 +19,14 @@ jobs:
       - name: 🧾 检出代码
         uses: actions/checkout@v3
 
+      # 🚀 运行 release-please，生成版本和 Release Notes
+      - name: 🚀 运行 release-please，生成版本和 Release Notes
+        id: release
+        uses: googleapis/release-please-action@v4
+        with:
+          config-file: .github/.release-please-config.json
+          manifest-file: .github/.release-please-manifest.json
+          
       # 设置 Java 11 环境
       - name: ☕️ 设置 Java 11 环境
         uses: actions/setup-java@v3
@@ -48,14 +56,6 @@ jobs:
           $msbuildPath = vswhere -latest -products * -requires Microsoft.Component.MSBuild -find MSBuild\**\Bin\MSBuild.exe
           echo "MSBUILD_PATH=$msbuildPath" | Out-File -FilePath $env:GITHUB_ENV -Encoding utf8 -Append
           echo "Found msbuild: $msbuildPath"
-
-      # 🚀 运行 release-please，生成版本和 Release Notes
-      - name: 🚀 运行 release-please，生成版本和 Release Notes
-        id: release
-        uses: googleapis/release-please-action@v4
-        with:
-          config-file: .github/.release-please-config.json
-          manifest-file: .github/.release-please-manifest.json
 
       # 构建 Android ARM64
       - name: 🏗️ 构建 Android ARM64
