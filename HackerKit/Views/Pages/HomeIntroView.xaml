@@ -1,0 +1,99 @@
+<ContentView xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="HackerKit.Views.Pages.HomeIntroView"
+             BackgroundColor="Transparent">
+    <Grid>
+        <!-- 蓝色渐变背景 -->
+        <Grid.Background>
+            <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
+                <GradientStop Color="#F7FBFF" Offset="0.0"/>
+                <GradientStop Color="#D6EFFF" Offset="0.5"/>
+                <GradientStop Color="#B2D8F6" Offset="1.0"/>
+            </LinearGradientBrush>
+        </Grid.Background>
+        <ScrollView>
+            <StackLayout x:Name="MainStack" Padding="22,5,22,26" Spacing="0">
+                <Frame BackgroundColor="#E6E6FA"
+                       CornerRadius="36"
+                       Padding="30"
+                       Margin="0,0,0,34"
+                       BorderColor="#E0F3FF"
+                       HasShadow="True">
+                    <StackLayout Spacing="10" HorizontalOptions="Center">
+                        <Label Text="🛠️" FontSize="68" HorizontalOptions="Center"/>
+                        <Label Text="HackerKit"
+                               FontSize="34"
+                               FontAttributes="Bold"
+                               TextColor="#17476B"
+                               HorizontalOptions="Center"/>
+                        <Label Text="你的开发灵感能量站"
+                               FontSize="15"
+                               TextColor="#5086B1"
+                               HorizontalOptions="Center"/>
+                    </StackLayout>
+                </Frame>
+
+                <StackLayout x:Name="CardStack" Spacing="24">
+                    <Frame x:Name="Card1" BackgroundColor="#E0F3FF"
+                           CornerRadius="28" Padding="22" Margin="0,0,0,8"
+                           BorderColor="#B2D8F6" HasShadow="True" Opacity="0" Scale="0.95">
+                        <Grid ColumnDefinitions="Auto,*" VerticalOptions="Center">
+                            <Label Text="🧊" FontSize="39" VerticalOptions="Center"/>
+                            <StackLayout Grid.Column="1" Padding="17,0,0,0">
+                                <Label Text="丰富工具，随时随地" FontSize="20" FontAttributes="Bold" TextColor="#17476B"/>
+                                <Label Text="编码解码、文件处理、图像转换、文本批量操作……各式开发实用工具一站集成，助力您的工作、学习和生活" FontSize="15" TextColor="#4A90BF"/>
+                            </StackLayout>
+                        </Grid>
+                    </Frame>
+                    <Frame x:Name="Card2" BackgroundColor="#E0F3FF"
+                           CornerRadius="28" Padding="22" Margin="0,0,0,8"
+                           BorderColor="#B2D8F6" HasShadow="True" Opacity="0" Scale="0.95">
+                        <Grid ColumnDefinitions="Auto,*" VerticalOptions="Center">
+                            <Label Text="🔄" FontSize="39" VerticalOptions="Center"/>
+                            <StackLayout Grid.Column="1" Padding="17,0,0,0">
+                                <Label Text="持续更新，焕新体验" FontSize="20" FontAttributes="Bold" TextColor="#17476B"/>
+                                <Label Text="定期添加新功能，问题极速修复，体验始终领先同行。" FontSize="15" TextColor="#4A90BF"/>
+                            </StackLayout>
+                        </Grid>
+                    </Frame>
+                    <Frame x:Name="Card3" BackgroundColor="#E0F3FF"
+                           CornerRadius="28" Padding="22" Margin="0,0,0,8"
+                           BorderColor="#B2D8F6" HasShadow="True" Opacity="0" Scale="0.95">
+                        <Grid ColumnDefinitions="Auto,*" VerticalOptions="Center">
+                            <Label Text="✨" FontSize="39" VerticalOptions="Center"/>
+                            <StackLayout Grid.Column="1" Padding="17,0,0,0">
+                                <Label Text="极简美学，高效舒适" FontSize="20" FontAttributes="Bold" TextColor="#17476B"/>
+                                <Label Text="界面简洁清澈，操作0门槛，功能一步到位，效率与美观兼得。" FontSize="15" TextColor="#4A90BF"/>
+                            </StackLayout>
+                        </Grid>
+                    </Frame>
+                    <Frame x:Name="Card4" BackgroundColor="#E0F3FF"
+                           CornerRadius="28" Padding="22" Margin="0,0,0,8"
+                           BorderColor="#B2D8F6" HasShadow="True" Opacity="0" Scale="0.95">
+                        <Grid ColumnDefinitions="Auto,*" VerticalOptions="Center">
+                            <Label Text="🛡️" FontSize="39" VerticalOptions="Center"/>
+                            <StackLayout Grid.Column="1" Padding="17,0,0,0">
+                                <Label Text="隐私优先，数据自控" FontSize="20" FontAttributes="Bold" TextColor="#17476B"/>
+                                <Label Text="核心功能本地运行，不上传数据，无广告干扰，安心专注你的每一秒。" FontSize="15" TextColor="#4A90BF"/>
+                            </StackLayout>
+                        </Grid>
+                    </Frame>
+                </StackLayout>
+                <Frame BackgroundColor="#D6EFFF"
+                       CornerRadius="22"
+                       Padding="20"
+                       Margin="0,36,0,0"
+                       BorderColor="#B2D8F6"
+                       HasShadow="False">
+                    <StackLayout Spacing="8" HorizontalOptions="Center">
+                        <Label Text="让开发更高效，让工具箱更有温度" FontSize="17" TextColor="#326EB1" FontAttributes="Bold"/>
+                        <Label Text="HackerKit · 你的实用灵感工具箱"
+                               FontSize="13"
+                               TextColor="#7FB4E1"
+                               HorizontalOptions="Center"/>
+                    </StackLayout>
+                </Frame>
+            </StackLayout>
+        </ScrollView>
+    </Grid>
+</ContentView>

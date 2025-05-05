@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:icon="clr-namespace:IconPacks.IconKind;assembly=IconPacks.Material"
+             xmlns:md="clr-namespace:Material.Components.Maui;assembly=Material.Components.Maui"
+             xmlns:mds="clr-namespace:Material.Components.Maui.Styles;assembly=Material.Components.Maui"
+             xmlns:views="clr-namespace:HackerKit.Views"
+             xmlns:models="clr-namespace:HackerKit.Models"
+             x:Class="HackerKit.Views.MainPage"
+             BackgroundColor="{DynamicResource SurfaceColor}">
+
+    <AbsoluteLayout>
+        <Grid
+            AbsoluteLayout.LayoutBounds="0,0,1,1"
+            AbsoluteLayout.LayoutFlags="All">
+            <!--工具栏-->
+            <Grid VerticalOptions="Start" HeightRequest="56" BackgroundColor="#F0F8FF">
+                
+                <md:IconButton x:Name="MenuButton"
+                              IconData="{Static icon:Material.Menu}"
+                              Style="{DynamicResource StandardIconButtonStyle}"
+                              HorizontalOptions="Start"
+                              Margin="10,0,0,0"
+                              Clicked="MenuButton_Clicked" />
+                <Label Text="HackerKit" 
+                      HorizontalOptions="Center" 
+                      VerticalOptions="Center"
+                      FontSize="18"
+                      FontAttributes="Bold" />
+
+                <md:IconButton x:Name="SettingsButton"
+                        Grid.Column="2"
+                        IconData="{Static icon:Material.Home}"
+                        Style="{DynamicResource StandardIconButtonStyle}"
+                        HorizontalOptions="End"
+                        Margin="0,0,10,0"
+                        Clicked="SettingsButton_Clicked" />
+
+            </Grid>
+
+            <!--主内容-->
+            <ContentPresenter x:Name="MainContentView" 
+                             Margin="0,56,0,0" 
+                             HorizontalOptions="Fill" 
+                             VerticalOptions="Fill">
+                
+                <ContentPresenter.Content>
+                    <VerticalStackLayout VerticalOptions="Center" HorizontalOptions="Center">
+                        <Label Text="请从菜单选择功能模块" 
+                               HorizontalOptions="Center" 
+                               VerticalOptions="Center" 
+                               FontSize="16" />
+                    </VerticalStackLayout>
+                </ContentPresenter.Content>
+            </ContentPresenter>
+
+        </Grid>
+
+        <BoxView x:Name="DrawerOverlay"
+                 BackgroundColor="Black"
+                 Opacity="0"
+                 IsVisible="False"
+                 AbsoluteLayout.LayoutBounds="0,0,1,1"
+                 AbsoluteLayout.LayoutFlags="All">
+            <BoxView.GestureRecognizers>
+                <TapGestureRecognizer Tapped="Overlay_Tapped" />
+                <PanGestureRecognizer PanUpdated="OnOverlayPanUpdated" />
+            </BoxView.GestureRecognizers>
+        </BoxView>
+
+        <md:NavigationDrawer x:Name="NavDrawer"
+                            IsVisible="False"
+                            WidthRequest="280"
+                            TranslationX="-280"
+                            HorizontalOptions="Center"
+                            AbsoluteLayout.LayoutBounds="0,0,AutoSize,1"
+                            AbsoluteLayout.LayoutFlags="HeightProportional">
+            <md:NavigationDrawer.GestureRecognizers>
+                <PanGestureRecognizer PanUpdated="OnDrawerPanUpdated" />
+            </md:NavigationDrawer.GestureRecognizers>
+
+            <md:NavigationDrawer.Items>
+                <!--动态添加分类和模块-->
+            </md:NavigationDrawer.Items>
+            <md:NavigationDrawer.FooterItems>
+                <md:NavigationDrawerItem x:Name="SettingsItem"
+                                        IconData="{Static icon:Material.Settings}"
+                                        Text="设置"
+                                        StateLayerColor="#E8DEF8"
+                                        Clicked="NavigationItem_Clicked" />
+            </md:NavigationDrawer.FooterItems>
+        </md:NavigationDrawer>
+
+        <views:ToastsHostView
+                x:Name="ToastsHost"
+                AbsoluteLayout.LayoutBounds="0.5,1,AutoSize,AutoSize"
+                AbsoluteLayout.LayoutFlags="PositionProportional" />
+    </AbsoluteLayout>
+</ContentPage>

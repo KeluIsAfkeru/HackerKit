@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<ContentView xmlns="http://schemas.microsoft.com/dotnet/2021/maui" xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" xmlns:icon="clr-namespace:IconPacks.IconKind;assembly=IconPacks.Material" xmlns:mdc="clr-namespace:Material.Components.Maui;assembly=Material.Components.Maui" x:Class="HackerKit.Views.Pages.JWTToolView" BackgroundColor="#F8F8FF">
+    <ScrollView>
+        <VerticalStackLayout Padding="18,0" Spacing="16" WidthRequest="{OnPlatform Default=500, Android=-1, iOS=-1, WinUI=500}" HorizontalOptions="Center">
+            <Grid ColumnSpacing="10" HorizontalOptions="FillAndExpand" Margin="0,10,0,10">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+                <mdc:SegmentedButton Grid.Column="0" x:Name="ModeSelector" HorizontalOptions="FillAndExpand" SelectedItemsChanged="OnModeChanged" HeightRequest="40" WidthRequest="300">
+                    <mdc:SegmentedItem Text="加密"/>
+                    <mdc:SegmentedItem Text="解密"/>
+                    <mdc:SegmentedItem Text="校验"/>
+                </mdc:SegmentedButton>
+                <!-- 粘贴按钮 -->
+                <mdc:IconButton Grid.Column="1" IconData="{Static icon:Material.ContentPaste}" Style="{DynamicResource FilledTonalIconButtonStyle}" Command="{Binding PasteCommand}" ToolTipProperties.Text="粘贴" HeightRequest="36" WidthRequest="36" Margin="0,0,8,0"/>
+                <!-- 清空按钮 -->
+                <mdc:IconButton Grid.Column="2" IconData="{Static icon:Material.Delete}" Style="{DynamicResource FilledTonalIconButtonStyle}" Command="{Binding ClearCommand}" ToolTipProperties.Text="清空" HeightRequest="36" WidthRequest="36"/>
+            </Grid>
+            <VerticalStackLayout IsVisible="{Binding IsEncryptMode}" Spacing="16">
+                <VerticalStackLayout Spacing="8">
+                    <Label Text="Payload信息 (JWT载荷)" FontAttributes="Bold" FontSize="16" TextColor="#222"/>
+                    <Frame HasShadow="True" CornerRadius="12" Padding="10" BackgroundColor="#F8F8FF">
+                        <Editor Text="{Binding PayloadJson}" AutoSize="TextChanges" HeightRequest="150" FontSize="14" TextColor="#333" Placeholder="输入JSON格式的Payload数据" BackgroundColor="Transparent"/>
+                    </Frame>
+                </VerticalStackLayout>
+                <VerticalStackLayout Spacing="8" IsVisible="{Binding IsSymmetricAlgorithm}">
+                    <Label Text="密钥信息" FontAttributes="Bold" FontSize="16" TextColor="#222"/>
+                    <Frame HasShadow="True" CornerRadius="12" Padding="10" BackgroundColor="#F8F8FF">
+                        <Editor Text="{Binding SecretKey}" AutoSize="TextChanges" HeightRequest="80" FontSize="14" TextColor="#333" Placeholder="输入至少256位(32字节)长度的密钥" BackgroundColor="Transparent"/>
+                    </Frame>
+                </VerticalStackLayout>
+                <VerticalStackLayout Spacing="8" IsVisible="{Binding IsAsymmetricAlgorithm}">
+                    <Grid ColumnSpacing="15" RowSpacing="10">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="Auto"/>
+                        </Grid.ColumnDefinitions>
+                        <Label Text="私钥 (用于签名)" FontAttributes="Bold" FontSize="16" TextColor="#222" Grid.Column="0" VerticalOptions="Center"/>
+                        <mdc:Button Grid.Column="1" Style="{DynamicResource OutlinedButtonStyle}" Text="生成密钥对" IconData="{Static icon:Material.VpnKey}" Command="{Binding GenerateKeyPairCommand}" FontSize="14" HeightRequest="36" VerticalOptions="Center"/>
+                    </Grid>
+                    <Frame HasShadow="True" CornerRadius="12" Padding="10" BackgroundColor="#F8F8FF">
+                        <Editor Text="{Binding PrivateKey}" AutoSize="TextChanges" HeightRequest="120" FontSize="14" TextColor="#333" Placeholder="输入PEM格式的私钥或点击'生成密钥对'按钮" BackgroundColor="Transparent"/>
+                    </Frame>
+                    <Label Text="公钥 (用于验证)" FontAttributes="Bold" FontSize="16" TextColor="#222"/>
+                    <Frame HasShadow="True" CornerRadius="12" Padding="10" BackgroundColor="#F8F8FF">
+                        <Editor Text="{Binding PublicKey}" AutoSize="TextChanges" HeightRequest="80" FontSize="14" TextColor="#333" IsReadOnly="True" Placeholder="生成密钥对后将显示对应的公钥" BackgroundColor="Transparent"/>
+                    </Frame>
+                </VerticalStackLayout>
+                <Grid ColumnSpacing="5" RowSpacing="0">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <mdc:ComboBox x:Name="AlgorithmComboBox" Grid.Column="0" Style="{DynamicResource OutlinedComboBoxStyle}" SelectedChanged="OnAlgorithmChanged" FontSize="16" FontFamily="AlimamaThin" OutlineWidth="1" HeightRequest="48" HorizontalOptions="FillAndExpand" VerticalOptions="Center" LabelText="算法">
+                        <mdc:MenuItem Text="HS256 "/>
+                        <mdc:MenuItem Text="HS384 "/>
+                        <mdc:MenuItem Text="HS512 "/>
+                        <mdc:MenuItem Text="RS256 "/>
+                        <mdc:MenuItem Text="RS384 "/>
+                        <mdc:MenuItem Text="RS512 "/>
+                        <mdc:MenuItem Text="ES256 "/>
+                        <mdc:MenuItem Text="ES384 "/>
+                        <mdc:MenuItem Text="ES512 "/>
+                    </mdc:ComboBox>
+                    <mdc:Button Grid.Column="1" Style="{DynamicResource FilledTonalButtonStyle}" Text="生成" FontWeight="Bold" IconData="{Static icon:Material.VpnKey}" Command="{Binding EncryptCommand}" FontSize="15" HeightRequest="48" VerticalOptions="Center"/>
+                </Grid>
+            </VerticalStackLayout>
+            <VerticalStackLayout IsVisible="{Binding IsNotEncryptMode}" Spacing="16">
+                <VerticalStackLayout Spacing="8">
+                    <Label Text="JWT令牌" FontAttributes="Bold" FontSize="16" TextColor="#222"/>
+                    <Frame HasShadow="True" CornerRadius="12" Padding="10" BackgroundColor="#F8F8FF">
+                        <Editor Text="{Binding JwtToken}" AutoSize="TextChanges" HeightRequest="100" FontSize="14" TextColor="#333" Placeholder="输入要解析的JWT令牌" BackgroundColor="Transparent"/>
+                    </Frame>
+                </VerticalStackLayout>
+                <VerticalStackLayout Spacing="8" IsVisible="{Binding IsVerifyMode}">
+                    <VerticalStackLayout Spacing="8" IsVisible="{Binding IsSymmetricAlgorithm}">
+                        <Label Text="密钥信息" FontAttributes="Bold" FontSize="16" TextColor="#222"/>
+                        <Frame HasShadow="True" CornerRadius="12" Padding="10" BackgroundColor="#F8F8FF">
+                            <Editor Text="{Binding SecretKey}" AutoSize="TextChanges" HeightRequest="80" FontSize="14" TextColor="#333" Placeholder="输入用于验证的密钥" BackgroundColor="Transparent"/>
+                        </Frame>
+                    </VerticalStackLayout>
+                    <VerticalStackLayout Spacing="8" IsVisible="{Binding IsAsymmetricAlgorithm}">
+                        <Label Text="公钥信息" FontAttributes="Bold" FontSize="16" TextColor="#222"/>
+                        <Frame HasShadow="True" CornerRadius="12" Padding="10" BackgroundColor="#F8F8FF">
+                            <Editor Text="{Binding PublicKey}" AutoSize="TextChanges" HeightRequest="120" FontSize="14" TextColor="#333" Placeholder="输入PEM格式的公钥用于验证" BackgroundColor="Transparent"/>
+                        </Frame>
+                    </VerticalStackLayout>
+                </VerticalStackLayout>
+                <VerticalStackLayout IsVisible="{Binding HasParsedToken}" Spacing="8">
+                    <BoxView HeightRequest="1" Color="#E0E0E0" HorizontalOptions="FillAndExpand" Margin="0,10"/>
+                    <VerticalStackLayout Spacing="16">
+                        <VerticalStackLayout Spacing="4">
+                            <Label Text="Header:" FontAttributes="Bold" TextColor="#333"/>
+                            <Frame Padding="10" CornerRadius="8" BackgroundColor="#F8F8FF">
+                                <Label Text="{Binding DecodedHeader}" FontFamily="AlimamaThin" TextColor="#555"/>
+                            </Frame>
+                        </VerticalStackLayout>
+                        <VerticalStackLayout Spacing="4">
+                            <Label Text="Payload:" FontAttributes="Bold" TextColor="#333"/>
+                            <Frame Padding="10" CornerRadius="8" BackgroundColor="#F8F8FF">
+                                <Label Text="{Binding DecodedPayload}" FontFamily="AlimamaThin" TextColor="#555"/>
+                            </Frame>
+                        </VerticalStackLayout>
+                        <VerticalStackLayout Spacing="4" IsVisible="{Binding HasExpirationClaim}">
+                            <Label Text="过期时间:" FontAttributes="Bold" TextColor="#333"/>
+                            <Frame Padding="10" CornerRadius="8" BackgroundColor="#F8F8FF">
+                                <Label Text="{Binding ExpirationTimeFormatted}" FontFamily="AlimamaThin" TextColor="{Binding ExpirationColor}"/>
+                            </Frame>
+                        </VerticalStackLayout>
+                    </VerticalStackLayout>
+                </VerticalStackLayout>
+                <mdc:Button Style="{DynamicResource FilledTonalButtonStyle}" Text="{Binding ActionButtonText}" FontWeight="Bold" IconData="{Binding ActionButtonIcon}" Command="{Binding ActionCommand}" FontSize="15" HeightRequest="48" Margin="0,10,0,0" HorizontalOptions="FillAndExpand"/>
+            </VerticalStackLayout>
+            <VerticalStackLayout Spacing="8" IsVisible="{Binding HasResult}">
+                <Label Text="结果" FontAttributes="Bold" FontSize="16" TextColor="#222"/>
+                <Frame HasShadow="True" CornerRadius="12" Padding="16" BackgroundColor="#F8F8FF">
+                    <VerticalStackLayout Spacing="16">
+                        <Label Text="{Binding ResultTitle}" FontAttributes="Bold" FontSize="16" TextColor="{Binding ResultColor}"/>
+                        <ScrollView Orientation="Horizontal">
+                            <Label Text="{Binding ResultText}" FontFamily="AlimamaThin" TextColor="#555"/>
+                        </ScrollView>
+                    </VerticalStackLayout>
+                </Frame>
+                <mdc:Button Style="{DynamicResource FilledTonalButtonStyle}" Text="复制结果" FontWeight="Bold" IconData="{Static icon:Material.ContentCopy}" Command="{Binding CopyResultCommand}" FontSize="15" HeightRequest="48" HorizontalOptions="Center" WidthRequest="140" Margin="0,10,0,10"/>
+            </VerticalStackLayout>
+        </VerticalStackLayout>
+    </ScrollView>
+</ContentView>

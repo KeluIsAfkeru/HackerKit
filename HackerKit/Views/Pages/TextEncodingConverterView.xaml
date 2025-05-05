@@ -1,0 +1,152 @@
+<ContentView
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:icon="clr-namespace:IconPacks.IconKind;assembly=IconPacks.Material"
+    xmlns:models="clr-namespace:HackerKit.Models"
+    xmlns:mdc="clr-namespace:Material.Components.Maui;assembly=Material.Components.Maui"
+    x:Class="HackerKit.Views.Pages.TextEncodingConverterView"
+    BackgroundColor="#F8F8FF">
+    <Grid>
+        <ScrollView>
+            <VerticalStackLayout Padding="18,0" Spacing="10" WidthRequest="{OnPlatform Default=500, Android=-1, iOS=-1, WinUI=500}" HorizontalOptions="Center">
+
+                <!--粘贴/清空按钮-->
+                <Grid ColumnSpacing="0" RowSpacing="0" HorizontalOptions="FillAndExpand">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="Auto" />
+                    </Grid.ColumnDefinitions>
+                    <!--Label-->
+                    <Label Grid.Column="0"
+                   Text="输入内容"
+                   FontAttributes="Bold"
+                   FontSize="16"
+                   TextColor="#222"
+                   VerticalOptions="Center"
+                   />
+                    <!--ComboBox和粘贴清空IconButton-->
+                    <HorizontalStackLayout Grid.Column="1"
+                                  Spacing="8"
+                                  HorizontalOptions="End"
+                                  VerticalOptions="Center">
+                        <mdc:ComboBox x:Name="EncodingTypeComboBox" 
+                             Style="{DynamicResource OutlinedComboBoxStyle}"
+                             SelectedChanged="OnEncodingTypeChanged"
+                             FontSize = "16"
+                             FontFamily = "AlimamaThin"
+                             OutlineWidth ="1"
+                             LabelText= ""
+                             HeightRequest="36"
+                             WidthRequest="120"
+                             Margin="0,0,8,0">
+                            <mdc:MenuItem Text="Base64"/>
+                            <mdc:MenuItem Text="Unicode"/>
+                            <mdc:MenuItem Text="URL"/>
+                            <mdc:MenuItem Text="Hex"/>
+                            <mdc:MenuItem Text="UTF-8"/>
+                            <mdc:MenuItem Text="UTF-32"/>
+                            <mdc:MenuItem Text="Punycode"/>
+                            <mdc:MenuItem Text="ASCII"/>
+                            <mdc:MenuItem Text="HTML实体"/>
+                        </mdc:ComboBox>
+                        <mdc:IconButton
+                    IconData="{Static icon:Material.ContentPaste}"
+                    Style="{DynamicResource FilledTonalIconButtonStyle}"
+                    Command="{Binding PasteCommand}"
+                    ToolTipProperties.Text="粘贴"
+                    HeightRequest="36"
+                    WidthRequest="36"
+                    Margin="0,0,8,0"/>
+                        <mdc:IconButton
+                    IconData="{Static icon:Material.Delete}"
+                    Style="{DynamicResource FilledTonalIconButtonStyle}"
+                    Command="{Binding ClearCommand}"
+                    ToolTipProperties.Text="清空"
+                    HeightRequest="36"
+                    WidthRequest="36"/>
+                    </HorizontalStackLayout>
+                </Grid>
+
+                <!--输入框-->
+                <Frame HasShadow="True" CornerRadius="12" Padding="10" BackgroundColor="#F8F8FF">
+                    <Editor
+                x:Name="InputEditor"
+                Text="{Binding InputText}"
+                AutoSize="TextChanges"
+                HeightRequest="120"
+                FontSize="14"
+                TextColor="#333"
+                Placeholder="在这里输入要操作的文本捏x"
+                Keyboard="Text"
+                BackgroundColor="Transparent"
+                />
+                </Frame>
+
+                <!--编码/解码/复制按钮-->
+                <Grid ColumnSpacing="12" RowSpacing="0" HeightRequest="52" HorizontalOptions="FillAndExpand">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+
+                    <mdc:Button
+                Grid.Column="0"
+                Style="{DynamicResource FilledTonalButtonStyle}"
+                Text="编码"
+                FontWeight="Bold" 
+                IconData="{Static icon:Material.Code}"
+                Command="{Binding EncodeCommand}"
+                FontSize="15"
+                HeightRequest="44"
+                HorizontalOptions="FillAndExpand"
+                />
+
+                    <mdc:Button
+                Grid.Column="1"
+                Style="{DynamicResource FilledTonalButtonStyle}"
+                Text="解码"
+                FontWeight="Bold"
+                IconData="{Static icon:Material.CodeOff}"
+                Command="{Binding DecodeCommand}"
+                FontSize="15"
+                HeightRequest="44"
+                HorizontalOptions="FillAndExpand"
+                />
+
+                    <mdc:Button
+                Grid.Column="2"
+                Style="{DynamicResource FilledTonalButtonStyle}"
+                Text="复制"
+                FontWeight="Bold"
+                IconData="{Static icon:Material.ContentCopy}"
+                Command="{Binding CopyCommand}"
+                FontSize="15"
+                HeightRequest="44"
+                HorizontalOptions="FillAndExpand"
+                />
+
+                </Grid>
+
+                <!--结果-->
+                <Label Text="转换结果"
+               FontAttributes="Bold"
+               FontSize="16"
+               TextColor="#222" />
+
+                <Frame HasShadow="True" CornerRadius="12" Padding="10" BackgroundColor="#F8F8FF">
+                    <models:SelectableEditor
+                Text="{Binding OutputText}"
+                AutoSize="TextChanges"
+                HeightRequest="300"
+                FontSize="14"
+                TextColor="#333"
+                BackgroundColor="Transparent"
+                />
+
+                </Frame>
+
+            </VerticalStackLayout>
+        </ScrollView>
+    </Grid>
+</ContentView>

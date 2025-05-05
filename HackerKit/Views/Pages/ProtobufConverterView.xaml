@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ContentView xmlns="http://schemas.microsoft.com/dotnet/2021/maui" xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" xmlns:icon="clr-namespace:IconPacks.IconKind;assembly=IconPacks.Material" xmlns:models="clr-namespace:HackerKit.Models" xmlns:mdc="clr-namespace:Material.Components.Maui;assembly=Material.Components.Maui" x:Class="HackerKit.Views.Pages.ProtobufConverterView" BackgroundColor="#F8F8FF">  
+  <ScrollView> 
+    <VerticalStackLayout Padding="18,0" Spacing="16" WidthRequest="{OnPlatform Default=500, Android=-1, iOS=-1, WinUI=500}" HorizontalOptions="Center"> 
+      <!-- 顶部模式选择及操作按钮 -->  
+      <Grid ColumnSpacing="10" HorizontalOptions="FillAndExpand" Margin="0,10,0,10"> 
+        <Grid.ColumnDefinitions> 
+          <ColumnDefinition Width="*"/>  
+          <ColumnDefinition Width="Auto"/>  
+          <ColumnDefinition Width="Auto"/> 
+        </Grid.ColumnDefinitions>  
+        <mdc:SegmentedButton x:Name="ModeSelector" Grid.Column="0" HorizontalOptions="FillAndExpand" VerticalOptions="Center" SelectedItemsChanged="OnModeChanged" HeightRequest="40"> 
+          <mdc:SegmentedItem Text="编码"/>  
+          <mdc:SegmentedItem Text="解码"/> 
+        </mdc:SegmentedButton>  
+        <mdc:IconButton Grid.Column="1" IconData="{Static icon:Material.ContentPaste}" Style="{DynamicResource FilledTonalIconButtonStyle}" Command="{Binding PasteCommand}" ToolTipProperties.Text="粘贴" HeightRequest="36" WidthRequest="36" VerticalOptions="Center" Margin="0,0,8,0"/>  
+        <mdc:IconButton Grid.Column="2" IconData="{Static icon:Material.Delete}" Style="{DynamicResource FilledTonalIconButtonStyle}" Command="{Binding ClearCommand}" ToolTipProperties.Text="清空" HeightRequest="36" WidthRequest="36" VerticalOptions="Center"/> 
+      </Grid>  
+      <Grid ColumnSpacing="10" HorizontalOptions="FillAndExpand" Margin="0,0,0,0"> 
+        <Grid.ColumnDefinitions> 
+          <ColumnDefinition Width="*"/>  
+          <ColumnDefinition Width="Auto"/> 
+        </Grid.ColumnDefinitions>  
+        <Label Grid.Column="0" Text="输入内容" FontAttributes="Bold" FontSize="16" TextColor="#222" VerticalOptions="Center"/>  
+        <mdc:ComboBox x:Name="DecodeModePicker" Grid.Column="1" Style="{DynamicResource OutlinedComboBoxStyle}" SelectedChanged="OnDecodeModeChanged" FontSize="20" LabelText="" FontFamily="AlimamaThin" OutlineWidth="1" HeightRequest="36" Margin="12,0,0,0" VerticalOptions="Center" IsVisible="{Binding IsDecodeMode}"> 
+          <mdc:MenuItem Text="普通解码" FontFamily="AlimamaThin"/>  
+          <mdc:MenuItem Text="无head全部展开" FontFamily="AlimamaThin"/>  
+          <mdc:MenuItem Text="带head全部展开" FontFamily="AlimamaThin"/> 
+        </mdc:ComboBox> 
+      </Grid>  
+      <Frame HasShadow="True" CornerRadius="12" Padding="10" BackgroundColor="#F8F8FF"> 
+        <Editor Text="{Binding InputText}" AutoSize="TextChanges" HeightRequest="150" FontSize="14" TextColor="#333" Placeholder="{Binding InputPlaceholder}" BackgroundColor="Transparent"/> 
+      </Frame>  
+      <Grid ColumnSpacing="10" HorizontalOptions="FillAndExpand" Margin="0,10,0,10"> 
+        <Grid.ColumnDefinitions> 
+          <ColumnDefinition Width="*"/>  
+          <ColumnDefinition Width="*"/> 
+        </Grid.ColumnDefinitions>  
+        <mdc:Button Grid.Column="0" Style="{DynamicResource FilledTonalButtonStyle}" Text="{Binding ActionButtonText}" FontWeight="Bold" IconData="{Static icon:Material.Cached}" Command="{Binding ConvertCommand}" FontSize="15" HeightRequest="48" HorizontalOptions="FillAndExpand"/>  
+        <mdc:Button Grid.Column="1" Style="{DynamicResource FilledTonalButtonStyle}" Text="复制" FontWeight="Bold" IconData="{Static icon:Material.ContentCopy}" Command="{Binding CopyCommand}" FontSize="15" HeightRequest="48" HorizontalOptions="FillAndExpand"/> 
+      </Grid>  
+      <Label Text="转换结果" FontAttributes="Bold" FontSize="16" TextColor="#222"/>  
+      <Frame HasShadow="True" CornerRadius="12" Padding="10" BackgroundColor="#F8F8FF"> 
+        <models:SelectableEditor Text="{Binding OutputText}" AutoSize="TextChanges" HeightRequest="200" FontSize="14" TextColor="#333" BackgroundColor="Transparent"/> 
+      </Frame> 
+    </VerticalStackLayout> 
+  </ScrollView> 
+</ContentView>

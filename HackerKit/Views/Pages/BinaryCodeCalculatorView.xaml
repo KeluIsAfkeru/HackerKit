@@ -1,0 +1,175 @@
+<ContentView
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:icon="clr-namespace:IconPacks.IconKind;assembly=IconPacks.Material"
+    xmlns:mdc="clr-namespace:Material.Components.Maui;assembly=Material.Components.Maui"
+    x:Class="HackerKit.Views.Pages.BinaryCodeCalculatorView"
+    BackgroundColor="#F8F8FF">
+
+    <ScrollView>
+        <VerticalStackLayout Padding="18,0" Spacing="16" WidthRequest="{OnPlatform Default=500, Android=-1, iOS=-1, WinUI=500}" HorizontalOptions="Center">
+
+            <Grid ColumnSpacing="0" RowSpacing="0" HorizontalOptions="FillAndExpand">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="Auto" />
+                </Grid.ColumnDefinitions>
+
+                <Label Grid.Column="0"
+                       Text="输入整数"
+                       FontAttributes="Bold"
+                       FontSize="16"
+                       TextColor="#222"
+                       VerticalOptions="Center" />
+
+                <HorizontalStackLayout Grid.Column="1"
+                                      Spacing="8"
+                                      HorizontalOptions="End"
+                                      VerticalOptions="Center">
+                    <mdc:ComboBox x:Name="BitSizeComboBox" 
+                                 Style="{DynamicResource OutlinedComboBoxStyle}"
+                                 SelectedChanged="OnBitSizeChanged"
+                                 FontSize="16"
+                                 FontFamily="AlimamaThin"
+                                 OutlineWidth="1"
+                                 LabelText=""
+                                 HeightRequest="36"
+                                 WidthRequest="120"
+                                 Margin="0,0,8,0">
+                        <mdc:MenuItem Text="8位"/>
+                        <mdc:MenuItem Text="16位"/>
+                        <mdc:MenuItem Text="32位"/>
+                        <mdc:MenuItem Text="64位"/>
+                        <mdc:MenuItem Text="128位"/>
+                    </mdc:ComboBox>
+                    <mdc:IconButton
+                        IconData="{Static icon:Material.ContentPaste}"
+                        Style="{DynamicResource FilledTonalIconButtonStyle}"
+                        Command="{Binding PasteCommand}"
+                        ToolTipProperties.Text="粘贴"
+                        HeightRequest="36"
+                        WidthRequest="36"
+                        Margin="0,0,8,0"/>
+                    <mdc:IconButton
+                        IconData="{Static icon:Material.Delete}"
+                        Style="{DynamicResource FilledTonalIconButtonStyle}"
+                        Command="{Binding ClearCommand}"
+                        ToolTipProperties.Text="清空"
+                        HeightRequest="36"
+                        WidthRequest="36"/>
+                </HorizontalStackLayout>
+            </Grid>
+
+            <Entry
+                    Text="{Binding InputNumber}"
+                    FontSize="16"
+                    TextColor="#333"
+                    BackgroundColor="Transparent"
+                    Placeholder="请输入整数，如 -123"
+                    Keyboard="Numeric"
+                    Margin="0,0,0,0"/>
+
+            <mdc:Button
+                Style="{DynamicResource FilledTonalButtonStyle}"
+                Text="计算"
+                FontWeight="Bold" 
+                IconData="{Static icon:Material.Calculate}"
+                Command="{Binding CalculateCommand}"
+                FontSize="15"
+                HeightRequest="48"
+                HorizontalOptions="FillAndExpand"
+                />
+
+            <Label Text="计算结果"
+                   FontAttributes="Bold"
+                   FontSize="16"
+                   TextColor="#222"
+                   Margin="0,10,0,0" />
+
+            <Frame HasShadow="True" CornerRadius="12" Padding="16" BackgroundColor="#F8F8FF">
+                <VerticalStackLayout Spacing="16">
+                    <VerticalStackLayout Spacing="4">
+                        <Label Text="原码：" FontAttributes="Bold" TextColor="#333" />
+                        <ScrollView Orientation="Horizontal">
+                            <Label Text="{Binding OriginalCode}" 
+                                   FontFamily="AlimamaThin" 
+                                   TextColor="#555" />
+                        </ScrollView>
+                    </VerticalStackLayout>
+
+                    <VerticalStackLayout Spacing="4">
+                        <Label Text="反码：" FontAttributes="Bold" TextColor="#333" />
+                        <ScrollView Orientation="Horizontal">
+                            <Label Text="{Binding InverseCode}" 
+                                   FontFamily="AlimamaThin" 
+                                   TextColor="#555" />
+                        </ScrollView>
+                    </VerticalStackLayout>
+
+                    <VerticalStackLayout Spacing="4">
+                        <Label Text="补码：" FontAttributes="Bold" TextColor="#333" />
+                        <ScrollView Orientation="Horizontal">
+                            <Label Text="{Binding ComplementCode}" 
+                                   FontFamily="AlimamaThin" 
+                                   TextColor="#555" />
+                        </ScrollView>
+                    </VerticalStackLayout>
+                </VerticalStackLayout>
+            </Frame>
+
+            <Grid ColumnSpacing="12" RowSpacing="0" HeightRequest="52" HorizontalOptions="FillAndExpand" Margin="0,10,0,0">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+
+                <mdc:Button
+                    Grid.Column="0"
+                    Style="{DynamicResource FilledTonalButtonStyle}"
+                    Text="原码"
+                    FontWeight="Bold" 
+                    IconData="{Static icon:Material.ContentCopy}"
+                    Command="{Binding CopyOriginalCommand}"
+                    FontSize="14"
+                    HeightRequest="48"
+                    HorizontalOptions="FillAndExpand"
+                    />
+
+                <mdc:Button
+                    Grid.Column="1"
+                    Style="{DynamicResource FilledTonalButtonStyle}"
+                    Text="反码"
+                    FontWeight="Bold"
+                    IconData="{Static icon:Material.ContentCopy}"
+                    Command="{Binding CopyInverseCommand}"
+                    FontSize="14"
+                    HeightRequest="48"
+                    HorizontalOptions="FillAndExpand"
+                    />
+
+                <mdc:Button
+                    Grid.Column="2"
+                    Style="{DynamicResource FilledTonalButtonStyle}"
+                    Text="补码"
+                    FontWeight="Bold"
+                    IconData="{Static icon:Material.ContentCopy}"
+                    Command="{Binding CopyComplementCommand}"
+                    FontSize="14"
+                    HeightRequest="48"
+                    HorizontalOptions="FillAndExpand"
+                    />
+            </Grid>
+
+            <Frame HasShadow="True" CornerRadius="12" Padding="16" BackgroundColor="#F8F8FF" Margin="0,10,0,20">
+                <VerticalStackLayout Spacing="8">
+                    <Label Text="说明：" FontAttributes="Bold" FontSize="16" TextColor="#222222" />
+                    <Label Text="原码表示方法：最高位为符号位，1 表示负数，0 表示正数。其余比特位表示数值。" FontSize="14" TextColor="#555555" />
+                    <Label Text="反码表示方法：正数的反码是其本身，负数的反码为在原码的基础上，符号位不变，其余位取反。" FontSize="14" TextColor="#555555" />
+                    <Label Text="补码表示方法：正数的补码就是其本身，负数的补码为在原码的基础上，符号位不变，其余位取反，再+1（即在反码的基础上+1）。" FontSize="14" TextColor="#555555" />
+                    <Label Text="位数：整数的二进制比特位数，可以输入整数的值的范围为 [-2^(n-1) , 2^(n-1) - 1] , 其中 n 为比特位数。" FontSize="14" TextColor="#555555" />
+                </VerticalStackLayout>
+            </Frame>
+        </VerticalStackLayout>
+    </ScrollView>
+</ContentView>

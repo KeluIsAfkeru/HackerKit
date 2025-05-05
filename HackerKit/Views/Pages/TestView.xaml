@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentView xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="HackerKit.Views.Pages.TestView">
+
+    <VerticalStackLayout Padding="20" Spacing="20">
+        <Label Text="Test View 页面"
+               FontSize="24"
+               HorizontalOptions="Center" />
+
+        <Entry x:Name="testEntry"
+               Placeholder="请输入测试内容" />
+
+        <Button Text="显示内容"
+                Clicked="OnShowClicked" />
+
+        <Label x:Name="outputLabel"
+               Text=""
+               FontSize="18"
+               TextColor="Gray"
+               HorizontalOptions="Center" />
+    </VerticalStackLayout>
+</ContentView>

@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentView xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="HackerKit.Views.Pages.DefaultView"
+             xmlns:icon="clr-namespace:IconPacks.IconKind;assembly=IconPacks.Material"
+             xmlns:mdc="clr-namespace:Material.Components.Maui;assembly=Material.Components.Maui"
+             BackgroundColor="#FAFAFA">
+
+    <ContentView.Background>
+        <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+            <GradientStop Color="#FFFFFF" Offset="0.0" />
+            <GradientStop Color="#F7F9FC" Offset="1.0" />
+        </LinearGradientBrush>
+    </ContentView.Background>
+
+    <ScrollView>
+        <Grid Padding="24,30" RowSpacing="25" RowDefinitions="Auto,Auto,Auto">
+
+            <VerticalStackLayout Grid.Row="0" Spacing="12" HorizontalOptions="Center">
+                <Frame CornerRadius="28"
+                       HasShadow="True"
+                       BorderColor="Transparent"
+                       HeightRequest="80" 
+                       WidthRequest="80"
+                       BackgroundColor="White"
+                       HorizontalOptions="Center">
+                    <Label Text="⚒️" 
+                           FontSize="36" 
+                           HorizontalOptions="Center" 
+                           VerticalOptions="Center" />
+                </Frame>
+
+                <BoxView HeightRequest="3" 
+                         WidthRequest="40" 
+                         Color="#4361EE" 
+                         HorizontalOptions="Center"/>
+            </VerticalStackLayout>
+
+            <Frame Grid.Row="1" 
+                   Padding="24,24" 
+                   CornerRadius="20" 
+                   HasShadow="True"
+                   BorderColor="Transparent"
+                   BackgroundColor="White">
+
+                <VerticalStackLayout Spacing="20">
+                    <VerticalStackLayout Spacing="6">
+                        <Label Text="开发进行中" 
+                               FontSize="26" 
+                               TextColor="#303030"
+                               FontAttributes="Bold" 
+                               HorizontalOptions="Center" />
+
+                        <Label Text="我们正在努力呈现最佳体验" 
+                               FontSize="15" 
+                               TextColor="#707070"
+                               HorizontalOptions="Center" />
+
+                        <BoxView HeightRequest="1.5"
+                                 WidthRequest="60"
+                                 Color="#EAEAEA"
+                                 HorizontalOptions="Center"
+                                 Margin="0,12,0,0"/>
+                    </VerticalStackLayout>
+
+                    <!--内容文本-->
+                    <VerticalStackLayout Spacing="14">
+                        <Label Text="这个页面的内容还在玩命开发中，很快就会和大家见面啦，我们知道你一定很期待，不过已经上线的其他模块同样值得你去探索，说不定会有意想不到的收获哦！" 
+                               FontSize="14" 
+                               TextColor="#505050"
+                               LineBreakMode="WordWrap"
+                               LineHeight="1.4" />
+                    </VerticalStackLayout>
+                </VerticalStackLayout>
+            </Frame>
+
+            <!--按钮-->
+            <mdc:Button Grid.Row="2"
+                    Text="继续探索" 
+                    BackgroundColor="#4361EE"
+                    IconData="{Static icon:Material.Explore}"
+                    HeightRequest="48"
+                    WidthRequest="180"
+                    HorizontalOptions="Center" 
+                    Clicked = "Button_Clicked" 
+                    Margin="0,5,0,15"/>
+        </Grid>
+    </ScrollView>
+</ContentView>

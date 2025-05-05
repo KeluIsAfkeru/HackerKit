@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentView 
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:md="clr-namespace:Material.Components.Maui;assembly=Material.Components.Maui"
+    x:Class="HackerKit.Views.ToastView"
+    x:DataType="viewModels:ToastViewModel"
+    xmlns:viewModels="clr-namespace:HackerKit.ViewModels"
+    IsVisible="True"
+    BackgroundColor="Transparent"
+    Opacity="{Binding Opacity}">
+
+    <Frame 
+        CornerRadius="30" 
+        Padding="16,10" 
+        Margin="0,0,0,10"
+        HasShadow="True"
+        BackgroundColor="{Binding BackgroundColor}"
+        BorderColor="Transparent">
+        <Grid ColumnDefinitions="Auto,*" VerticalOptions="Center">
+            <md:IconButton
+                Grid.Column="0"
+                IconData="{Binding IconData}"
+                WidthRequest="30"
+                Style="{DynamicResource StandardIconButtonStyle}"
+                HeightRequest="30"
+                IconColor="{Binding IconColor}"
+                BackgroundColor="Transparent"
+                Margin="0,0,0,0"
+                IsEnabled="False"
+                />
+
+            <Label 
+                Grid.Column="1"
+                Text="{Binding Message}"
+                TextColor="{Binding TextColor}"
+                FontSize="14"
+                VerticalOptions="Center"/>
+        </Grid>
+    </Frame>
+</ContentView>

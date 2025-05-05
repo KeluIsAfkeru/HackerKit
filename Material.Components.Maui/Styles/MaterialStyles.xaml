@@ -1,0 +1,34 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ResourceDictionary
+    x:Class="Material.Components.Maui.Styles.MaterialStyles"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:Styles="clr-namespace:Material.Components.Maui.Styles;assembly=Material.Components.Maui">
+
+    <ResourceDictionary.MergedDictionaries>
+        <Styles:MaterialColors />
+        <Styles:ButtonStyles />
+        <Styles:IconButtonStyles />
+        <Styles:CardStyles />
+        <Styles:CheckBoxStyles />
+        <Styles:ChipStyles />
+        <Styles:FABStyles />
+        <Styles:ExtendedFABStyles />
+        <Styles:SwitchStyles />
+        <Styles:SegmentedButtonStyles />
+        <Styles:SegmentedItemStyles />
+        <Styles:ContextMenuStyles />
+        <Styles:MenuItemStyles />
+        <Styles:ComboBoxStyles />
+        <Styles:TextFieldStyles />
+        <Styles:ProgressIndicatorStyles />
+        <Styles:RadioItemStyles />
+        <Styles:NavigationBarStyles />
+        <Styles:NavigationBarItemStyles />
+        <Styles:NavigationDrawerStyles />
+        <Styles:NavigationDrawerItemStyles />
+        <Styles:TabsStyles />
+        <Styles:TabItemStyles />
+    </ResourceDictionary.MergedDictionaries>
+
+</ResourceDictionary>

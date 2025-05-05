@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<ContentView xmlns="http://schemas.microsoft.com/dotnet/2021/maui" xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" xmlns:icon="clr-namespace:IconPacks.IconKind;assembly=IconPacks.Material" xmlns:mdc="clr-namespace:Material.Components.Maui;assembly=Material.Components.Maui" xmlns:models="clr-namespace:HackerKit.Models" x:Class="HackerKit.Views.Pages.BaseConverterView" BackgroundColor="#F8F8FF">
+    <ScrollView>
+        <VerticalStackLayout Padding="18,0" Spacing="16" WidthRequest="{OnPlatform Default=500, Android=-1, iOS=-1, WinUI=500}" HorizontalOptions="Center">
+            <Grid ColumnSpacing="0" RowSpacing="0" HorizontalOptions="FillAndExpand">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+                <Label Grid.Column="0" Text="输入内容" FontAttributes="Bold" FontSize="16" TextColor="#222" VerticalOptions="Center"/>
+                <HorizontalStackLayout Grid.Column="1" Spacing="8" HorizontalOptions="End" VerticalOptions="Center">
+                    <mdc:IconButton IconData="{Static icon:Material.ContentPaste}" Style="{DynamicResource FilledTonalIconButtonStyle}" Command="{Binding PasteCommand}" ToolTipProperties.Text="粘贴" HeightRequest="36" WidthRequest="36" Margin="0,0,8,0"/>
+                    <mdc:IconButton IconData="{Static icon:Material.Delete}" Style="{DynamicResource FilledTonalIconButtonStyle}" Command="{Binding ClearCommand}" ToolTipProperties.Text="清空" HeightRequest="36" WidthRequest="36"/>
+                </HorizontalStackLayout>
+            </Grid>
+            <Frame HasShadow="True" CornerRadius="12" Padding="10" BackgroundColor="#F8F8FF">
+                <Editor Text="{Binding InputText}" AutoSize="TextChanges" HeightRequest="120" FontSize="14" TextColor="#333" Placeholder="请输入要转换的内容" Keyboard="Text" BackgroundColor="Transparent"/>
+            </Frame>
+            <Grid ColumnSpacing="18" RowSpacing="15" Margin="0,5,0,5">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+                <!-- 源格式 -->
+                <VerticalStackLayout Grid.Row="0" Grid.Column="0" Spacing="4">
+                    <Label Text="源格式" FontAttributes="Bold" TextColor="#222222"/>
+                    <mdc:ComboBox x:Name="SourceFormatComboBox" Style="{DynamicResource OutlinedComboBoxStyle}" SelectedChanged="OnSourceFormatChanged" FontSize="16" FontFamily="AlimamaThin" OutlineWidth="1" LabelText="" HeightRequest="48" HorizontalOptions="FillAndExpand" MaximumWidthRequest="220">
+                        <mdc:MenuItem Text="十进制"/>
+                        <mdc:MenuItem Text="十六进制"/>
+                        <mdc:MenuItem Text="二进制"/>
+                        <mdc:MenuItem Text="Base64"/>
+                    </mdc:ComboBox>
+                </VerticalStackLayout>
+                <!-- 目标格式 -->
+                <VerticalStackLayout Grid.Row="0" Grid.Column="1" Spacing="4">
+                    <Label Text="目标格式" FontAttributes="Bold" TextColor="#222222"/>
+                    <mdc:ComboBox x:Name="TargetFormatComboBox" Style="{DynamicResource OutlinedComboBoxStyle}" SelectedChanged="OnTargetFormatChanged" FontSize="16" FontFamily="AlimamaThin" OutlineWidth="1" LabelText="" HeightRequest="48" HorizontalOptions="FillAndExpand" MaximumWidthRequest="220">
+                        <mdc:MenuItem Text="十进制"/>
+                        <mdc:MenuItem Text="十六进制"/>
+                        <mdc:MenuItem Text="二进制"/>
+                        <mdc:MenuItem Text="Base64"/>
+                    </mdc:ComboBox>
+                </VerticalStackLayout>
+                <!-- 源格式分隔符 -->
+                <VerticalStackLayout Grid.Row="1" Grid.Column="0" Spacing="4">
+                    <Label Text="源格式分隔符" FontAttributes="Bold" TextColor="#222222"/>
+                    <mdc:ComboBox x:Name="SourceSeparatorComboBox" Style="{DynamicResource OutlinedComboBoxStyle}" SelectedChanged="OnSourceSeparatorChanged" FontSize="16" FontFamily="AlimamaThin" OutlineWidth="1" LabelText="" HeightRequest="48" HorizontalOptions="FillAndExpand" MaximumWidthRequest="220">
+                        <mdc:MenuItem Text="无"/>
+                        <mdc:MenuItem Text="逗号 (,)"/>
+                        <mdc:MenuItem Text="空格 ( )"/>
+                        <mdc:MenuItem Text="分号 (;)"/>
+                        <mdc:MenuItem Text="自定义"/>
+                    </mdc:ComboBox>
+                    <Entry x:Name="SourceSeparatorEntry" IsVisible="{Binding IsSourceSeparatorCustom}" Text="{Binding CustomSourceSeparator}" Placeholder="请输入自定义分隔符" Margin="0,5,0,0" HorizontalOptions="FillAndExpand" MaximumWidthRequest="220"/>
+                </VerticalStackLayout>
+                <!-- 目标格式分隔符 -->
+                <VerticalStackLayout Grid.Row="1" Grid.Column="1" Spacing="4">
+                    <Label Text="目标格式分隔符" FontAttributes="Bold" TextColor="#222222"/>
+                    <mdc:ComboBox x:Name="TargetSeparatorComboBox" Style="{DynamicResource OutlinedComboBoxStyle}" SelectedChanged="OnTargetSeparatorChanged" FontSize="16" FontFamily="AlimamaThin" OutlineWidth="1" LabelText="" HeightRequest="48" HorizontalOptions="FillAndExpand" MaximumWidthRequest="220">
+                        <mdc:MenuItem Text="无"/>
+                        <mdc:MenuItem Text="逗号 (,)"/>
+                        <mdc:MenuItem Text="空格 ( )"/>
+                        <mdc:MenuItem Text="分号 (;)"/>
+                        <mdc:MenuItem Text="自定义"/>
+                    </mdc:ComboBox>
+                    <Entry x:Name="TargetSeparatorEntry" IsVisible="{Binding IsTargetSeparatorCustom}" Text="{Binding CustomTargetSeparator}" Placeholder="请输入自定义分隔符" Margin="0,5,0,0" HorizontalOptions="FillAndExpand" MaximumWidthRequest="220"/>
+                </VerticalStackLayout>
+            </Grid>
+            <Grid ColumnSpacing="5">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+                <mdc:Button Grid.Column="0" Style="{DynamicResource FilledTonalButtonStyle}" Text="转换" FontWeight="Bold" IconData="{Static icon:Material.SwapHoriz}" Command="{Binding ConvertCommand}" FontSize="15" HeightRequest="48" HorizontalOptions="FillAndExpand" Margin="0,10,0,5"/>
+                <mdc:Button Grid.Column="1" Style="{DynamicResource FilledTonalButtonStyle}" Text="复制" FontWeight="Bold" IconData="{Static icon:Material.ContentCopy}" Command="{Binding CopyCommand}" FontSize="15" HeightRequest="48" HorizontalOptions="FillAndExpand" Margin="0,10,0,5"/>
+            </Grid>
+            <!-- 结果区域 -->
+            <Label Text="转换结果" FontAttributes="Bold" FontSize="16" TextColor="#222" Margin="0,10,0,0"/>
+            <Frame HasShadow="True" CornerRadius="12" Padding="10" BackgroundColor="#F8F8FF">
+                <models:SelectableEditor Text="{Binding OutputText}" AutoSize="TextChanges" HeightRequest="120" FontSize="14" TextColor="#333" BackgroundColor="Transparent"/>
+            </Frame>
+            <Frame HasShadow="True" CornerRadius="12" Padding="16" BackgroundColor="#F8F8FF" Margin="0,10,0,20">
+                <VerticalStackLayout Spacing="10">
+                    <Label Text="转换示例：" FontAttributes="Bold" FontSize="16" TextColor="#222222"/>
+                    <VerticalStackLayout Spacing="2">
+                        <Label Text="• 输入：-118,70,255，源格式：十进制，源分隔符：逗号，目标格式：十六进制，目标分隔符：逗号" FontSize="14" TextColor="#555555"/>
+                        <Label Text="  结果：8a,46,ff" FontSize="14" TextColor="#555555" Margin="12,0,0,0"/>
+                    </VerticalStackLayout>
+                    <VerticalStackLayout Spacing="2">
+                        <Label Text="• 输入：8a,46,ff，源格式：十六进制，源分隔符：逗号，目标格式：十进制，目标分隔符：逗号" FontSize="14" TextColor="#555555"/>
+                        <Label Text="  结果：138,70,255" FontSize="14" TextColor="#555555" Margin="12,0,0,0"/>
+                    </VerticalStackLayout>
+                    <VerticalStackLayout Spacing="2">
+                        <Label Text="• 输入：5Lit5Zu9YWJj，源格式：Base64，源分隔符：无，目标格式：十六进制，目标分隔符：逗号" FontSize="14" TextColor="#555555"/>
+                        <Label Text="  结果：e4,b8,ad,e5,9b,bd,61,62,63" FontSize="14" TextColor="#555555" Margin="12,0,0,0"/>
+                    </VerticalStackLayout>
+                    <VerticalStackLayout Spacing="2">
+                        <Label Text="• 输入：e4,b8,ad,e5,9b,bd,61,62,63，源格式：十六进制，源分隔符：逗号，目标格式：Base64，目标分隔符：无" FontSize="14" TextColor="#555555"/>
+                        <Label Text="  结果：5Lit5Zu9YWJj" FontSize="14" TextColor="#555555" Margin="12,0,0,0"/>
+                    </VerticalStackLayout>
+                </VerticalStackLayout>
+            </Frame>
+        </VerticalStackLayout>
+    </ScrollView>
+</ContentView>

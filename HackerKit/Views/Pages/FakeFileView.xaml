@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ContentView xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:icon="clr-namespace:IconPacks.IconKind;assembly=IconPacks.Material"
+             xmlns:mdc="clr-namespace:Material.Components.Maui;assembly=Material.Components.Maui"
+             x:Class="HackerKit.Views.Pages.FakeFileView"
+             BackgroundColor="#F8F8FF">
+    <ScrollView>
+        <VerticalStackLayout Padding="18,0" Spacing="16" WidthRequest="{OnPlatform Default=500, Android=-1, iOS=-1, WinUI=500}" HorizontalOptions="Center">
+            <Grid ColumnSpacing="10" HorizontalOptions="FillAndExpand" Margin="0,10,0,10">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+                <Label Text="假文件Protobuf生成器" FontSize="20" FontAttributes="Bold" TextColor="#222" HorizontalOptions="Start" VerticalOptions="Center"/>
+                <!-- 清空按钮 -->
+                <mdc:IconButton Grid.Column="2" IconData="{Static icon:Material.Delete}" Style="{DynamicResource FilledTonalIconButtonStyle}" Command="{Binding ClearCommand}" ToolTipProperties.Text="清空" HeightRequest="36" WidthRequest="36"/>
+            </Grid>
+
+            <VerticalStackLayout Spacing="8">
+                <Label Text="文件名" FontAttributes="Bold" FontSize="16" TextColor="#222222" />
+                <Entry
+                    Text="{Binding FileName}"
+                    FontSize="16"
+                    TextColor="#333"
+                    BackgroundColor="Transparent"
+                    Placeholder="请输入文件名"
+                    Margin="0,0,0,6"/>
+            </VerticalStackLayout>
+
+            <VerticalStackLayout Spacing="8">
+                <Label Text="文件大小(byte)" FontAttributes="Bold" FontSize="16" TextColor="#222222" />
+                <Entry
+                    Text="{Binding FileSize}"
+                    FontSize="16"
+                    TextColor="#333"
+                    BackgroundColor="Transparent"
+                    Placeholder="请输入文件大小"
+                    Keyboard="Numeric"
+                    Margin="0,0,0,0"/>
+            </VerticalStackLayout>
+
+            <mdc:Button Style="{DynamicResource FilledButtonStyle}" Text="生成FakeFile" Command="{Binding GenerateCommand}" IconData="{Static icon:Material.FileUpload}" FontSize="15" HeightRequest="48" HorizontalOptions="FillAndExpand"/>
+
+            <VerticalStackLayout Spacing="8" IsVisible="{Binding HasResult}">
+                <Label Text="生成结果" FontAttributes="Bold" FontSize="16" TextColor="#222222" />
+                <Frame HasShadow="True" CornerRadius="12" Padding="10" BackgroundColor="#F8F8FF">
+                    <Editor Text="{Binding ResultText}" AutoSize="TextChanges" HeightRequest="150" FontFamily="Courier New" FontSize="14" TextColor="#333333" IsReadOnly="True" BackgroundColor="Transparent" />
+                </Frame>
+                <mdc:Button Style="{DynamicResource FilledTonalButtonStyle}" Text="复制结果" Command="{Binding CopyResultCommand}" IconData="{Static icon:Material.ContentCopy}" FontSize="15" HeightRequest="48" HorizontalOptions="Center" WidthRequest="140" Margin="0,10,0,10"/>
+            </VerticalStackLayout>
+        </VerticalStackLayout>
+    </ScrollView>
+</ContentView>
