@@ -1,0 +1,75 @@
+name: Build HackerKit MAUI (.NET 9)
+
+on:
+  push:
+    branches: [ maui-mvvm ]
+  pull_request:
+    branches: [ maui-mvvm ]
+  workflow_dispatch:
+
+jobs:
+  build-android:
+    runs-on: windows-latest
+
+    steps:
+    - uses: actions/checkout@v3
+
+    - name: Setup .NET 9
+      uses: actions/setup-dotnet@v4
+      with:
+        dotnet-version: 9.0.x
+
+    - name: Install MAUI workload
+      run: dotnet workload install maui
+
+    - name: Restore dependencies
+      run: dotnet restore HackerKit/HackerKit.csproj
+
+    - name: Publish Android APKs
+      run: |
+        dotnet publish HackerKit/HackerKit.csproj -c Release -f net9.0-android -r android-arm --output publish/android-arm
+        dotnet publish HackerKit/HackerKit.csproj -c Release -f net9.0-android -r android-arm64 --output publish/android-arm64
+        dotnet publish HackerKit/HackerKit.csproj -c Release -f net9.0-android -r android-x86 --output publish/android-x86
+        dotnet publish HackerKit/HackerKit.csproj -c Release -f net9.0-android -r android-x64 --output publish/android-x64
+
+    - name: Upload Android APKs
+      uses: actions/upload-artifact@v4
+      with:
+        name: android-apks
+        path: |
+          publish/android-arm/*.apk
+          publish/android-arm64/*.apk
+          publish/android-x86/*.apk
+          publish/android-x64/*.apk
+        if-no-files-found: error
+
+  build-windows:
+    runs-on: windows-latest
+
+    steps:
+    - uses: actions/checkout@v3
+
+    - name: Setup .NET 9
+      uses: actions/setup-dotnet@v4
+      with:
+        dotnet-version: 9.0.x
+
+    - name: Install MAUI workload
+      run: dotnet workload install maui
+
+    - name: Restore dependencies
+      run: dotnet restore HackerKit/HackerKit.csproj
+
+    - name: Publish Windows App
+      run: |
+        dotnet publish HackerKit/HackerKit.csproj -c Release -f net9.0-windows10.0.19041.0 -r windows10.0.19041.0-x64 --output publish/windows
+
+    - name: Upload Windows packages
+      uses: actions/upload-artifact@v4
+      with:
+        name: windows-app
+        path: |
+          publish/windows/**/*.msix
+          publish/windows/**/*.msixbundle
+          publish/windows/**/*.appx
+        if-no-files-found: warn
